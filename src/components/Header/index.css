@@ -1,0 +1,26 @@
+.header {
+    height: 104px;
+
+    border-bottom: 1px solid #000000;
+
+    /* 가로로 정렬 */
+    display: flex;
+
+    /* 항목들을 축의 중심 부분에 정렬 */
+    justify-content: center;
+
+    /* 세로 정렬 */
+    align-items: center;
+
+    background-color: transparent;
+}
+
+.header .container-btn-header {
+    position: absolute;
+    left: 450px;
+}
+
+.header .container-img-header {
+    position: absolute;
+    right: 450px;
+}
