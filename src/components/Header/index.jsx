@@ -9,13 +9,15 @@ const Header = ({
                     imageSrc,
                 }) => {
     return (<div className={'header'}>
-        {useBackButton && <div className={'container-btn-header'}>
-            <BackButton/>
-        </div>}
-        <Title/>
-        {useUserImage && <div className={'container-img-header'}>
-            <UserImage src={imageSrc} alt={'사용자 사진'} width={36} height={36}/>
-        </div>}
+        <div className={'container-header'}>
+            <div className={'container-btn-header'}>
+                {useBackButton && <BackButton/>}
+            </div>
+            <Title/>
+            <div className={'container-img-header'}>
+                {useUserImage && <UserImage src={imageSrc} alt={'사용자 사진'} width={36} height={36}/>}
+            </div>
+        </div>
     </div>);
 };
 

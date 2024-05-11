@@ -1,5 +1,10 @@
 .App {
-  text-align: center;
+    margin: 0;
 
-  background-color: #F4F5F7;
+    background-color: #F4F5F7;
+
+    /* 자식 요소가 커서 배경색이 적용되지 않아 추가 */
+    overflow: auto;
+
+    text-align: center;
 }
