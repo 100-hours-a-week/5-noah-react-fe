@@ -1,5 +1,5 @@
 import BackButton from '../BackButton';
-import Title from '../Title';
+import HeaderTitle from '../HeaderTitle';
 import UserImage from '../UserImage';
 
 import styles from './styles.module.css';
@@ -14,7 +14,7 @@ const Header = ({
             <div className={styles.backButtonContainer}>
                 {useBackButton && <BackButton/>}
             </div>
-            <Title/>
+            <HeaderTitle/>
             <div className={styles.userImageContainer}>
                 {useUserImage && <UserImage src={imageSrc} alt={'사용자 사진'} width={36} height={36}/>}
             </div>

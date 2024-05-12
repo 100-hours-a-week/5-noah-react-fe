@@ -5,6 +5,7 @@ import validatePassword from '../../utils/validatePassword.mjs';
 import validateNickname from '../../utils/validateNickname.mjs';
 
 import styles from './styles.module.css';
+import BodyTitle from '../BodyTitle';
 
 const SignUpForm = () => {
     const DEFAULT_USER_IMAGE_PATH = '/etc-images/sign-up-default-background-image.png';
@@ -123,7 +124,7 @@ const SignUpForm = () => {
     }, [userImageStatus, emailStatus, passwordStatus, confirmPasswordStatus, nicknameStatus]);
 
     return (<div className={styles.signUpContainer}>
-        <p className={styles.signUpContainerTitleText}>회원가입</p>
+        <BodyTitle text={'회원가입'}></BodyTitle>
         <form className={styles.signUpForm}>
             <p className={styles.signUpFormLabelText}>프로필 사진</p>
             <p className={styles.signUpFormHelperText} id={'txt-helper-image'}>{userImageHelperText}</p>

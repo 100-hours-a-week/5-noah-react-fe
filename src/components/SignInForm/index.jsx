@@ -4,6 +4,7 @@ import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
 
 import styles from './styles.module.css';
+import BodyTitle from '../BodyTitle';
 
 const SignInForm = () => {
     const [email, setEmail] = useState('');
@@ -52,7 +53,7 @@ const SignInForm = () => {
     };
 
     return (<div className={styles.signInContainer}>
-        <p className={styles.signInContainerTitleText}>로그인</p>
+        <BodyTitle text={'로그인'}></BodyTitle>
         <form className={styles.signInForm} onSubmit={handleSignIn}>
             <label className={styles.signInFormLabelText}>이메일</label>
             <input className={styles.signInFormInput} onChange={handleEmailChange} type={'email'}

@@ -4,6 +4,7 @@ import SimplePost from '../SimplePost';
 const SimplePostContainer = () => {
 
     return (<div className={styles.simplePostContainer}>
+        {/* 재사용 어렵다고 파단 */}
         <p className={styles.simplePostContainerTitle}>안녕하세요,</p>
         <p className={styles.simplePostContainerTitle}>아무 말 대잔치 <b>게시판</b> 입니다.</p>
         <div className={styles.moveEditButtonContainer}>
