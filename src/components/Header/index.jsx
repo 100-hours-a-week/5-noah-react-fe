@@ -1,8 +1,7 @@
+import styles from './styles.module.css';
 import BackButton from '../BackButton';
 import HeaderTitle from '../HeaderTitle';
 import UserImage from '../UserImage';
-
-import styles from './styles.module.css';
 
 const Header = ({
                     useBackButton,

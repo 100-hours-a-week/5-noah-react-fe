@@ -1,10 +1,9 @@
+import styles from './styles.module.css';
 import {Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
 import validateNickname from '../../utils/validateNickname.mjs';
-
-import styles from './styles.module.css';
 import BodyTitle from '../BodyTitle';
 
 const SignUpForm = () => {

@@ -1,11 +1,10 @@
+import styles from './App.module.css';
 import {Route, Routes} from 'react-router-dom';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 import PostsPage from './pages/Posts';
 import CreatePost from './pages/CreatePost';
 import UpdatePost from './pages/UpdatePost';
-
-import styles from './App.module.css';
 
 function App() {
     return (<div className={styles.App}>

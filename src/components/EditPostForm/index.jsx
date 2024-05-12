@@ -1,6 +1,5 @@
-import BodyTitle from '../BodyTitle';
-
 import styles from './styles.module.css';
+import BodyTitle from '../BodyTitle';
 
 const EditPostForm = ({bodyTitleText}) => {
     // 조건에 따라 hooks이나 이벤트를 바꿀 수 있는가?
