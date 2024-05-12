@@ -1,0 +1,27 @@
+.header {
+    height: 10vh;
+
+    border-bottom: 1px solid #000000;
+}
+
+.headerContainer {
+    width: 40%;
+    height: 100%;
+    margin: 0 auto;
+
+    /* 가로로 정렬 */
+    display: flex;
+
+    justify-content: space-between;
+
+    /* 세로 정렬 */
+    align-items: center;
+}
+
+.header .backButtonContainer {
+    width: 10%;
+}
+
+.header .userImageContainer {
+    width: 10%;
+}
