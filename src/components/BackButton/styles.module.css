@@ -1,4 +1,4 @@
-.btn-move-back {
+.backButton {
     width: 40px;
     height: 40px;
 
@@ -7,7 +7,7 @@
     background-color: transparent;
 }
 
-.txt-btn-move-back {
+.backButtonText {
     font-size: 30px;
     font-weight: bold;
 

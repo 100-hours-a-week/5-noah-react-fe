@@ -4,7 +4,7 @@
     border-bottom: 1px solid #000000;
 }
 
-.container-header {
+.headerContainer {
     width: 40%;
     height: 100%;
     margin: 0 auto;
@@ -18,10 +18,10 @@
     align-items: center;
 }
 
-.header .container-btn-header {
+.header .backButtonContainer {
     width: 10%;
 }
 
-.header .container-img-header {
+.header .userImageContainer {
     width: 10%;
 }

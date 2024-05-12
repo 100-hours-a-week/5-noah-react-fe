@@ -1,5 +1,6 @@
-import './index.css';
 import {useNavigate} from 'react-router-dom';
+
+import styles from './styles.module.css';
 
 const Title = () => {
     const navigate = useNavigate();
@@ -9,7 +10,7 @@ const Title = () => {
     };
 
     return (<>
-        <span className={'txt'} onClick={onClick}>아무 말 대잔치</span>
+        <span className={styles.titleText} onClick={onClick}>아무 말 대잔치</span>
     </>);
 };
 

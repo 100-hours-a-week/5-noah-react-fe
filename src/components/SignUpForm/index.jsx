@@ -1,9 +1,10 @@
-import './index.css';
 import {Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
 import validateNickname from '../../utils/validateNickname.mjs';
+
+import styles from './styles.module.css';
 
 const SignUpForm = () => {
     const DEFAULT_USER_IMAGE_PATH = '/etc-images/sign-up-default-background-image.png';
@@ -121,32 +122,35 @@ const SignUpForm = () => {
         }
     }, [userImageStatus, emailStatus, passwordStatus, confirmPasswordStatus, nicknameStatus]);
 
-    return (<div className={'container-sign-up'}>
-        <p id={'txt-title-container-sign-up'}>회원가입</p>
-        <form id={'form-sign-up'}>
-            <p className={'txt-label-form-sign-up'}>프로필 사진</p>
-            <label htmlFor={'input-user-image-form-sign-up'}>
-                <img id={'img-label-form-sign-up'} src={userImageSrc}
-                     alt={'사용자 배경 사진'}/>
+    return (<div className={styles.signUpContainer}>
+        <p className={styles.signUpContainerTitleText}>회원가입</p>
+        <form className={styles.signUpForm}>
+            <p className={styles.signUpFormLabelText}>프로필 사진</p>
+            <p className={styles.signUpFormHelperText} id={'txt-helper-image'}>{userImageHelperText}</p>
+            <label htmlFor={'userImageInput'}>
+                <img className={styles.signUpFormLabelImage} src={userImageSrc} alt={'사용자 배경 사진'}/>
             </label>
-            <input id={'input-user-image-form-sign-up'} type={'file'} onChange={handleChangeUserImage} required={true}/>
-            <p className={'txt-helper'} id={'txt-helper-image'}>{userImageHelperText}</p>
-            <label className={'txt-label-form-sign-up'}>이메일 *</label>
-            <input className={'input-form-sign-up'} onChange={handleChangeEmail}/>
-            <p className={'txt-helper'} id={'txt-helper-email'}>{emailHelperText}</p>
-            <label className={'txt-label-form-sign-up'}>비밀번호 *</label>
-            <input className={'input-form-sign-up'} onChange={handleChangePassword} type={'password'}/>
-            <p className={'txt-helper'}>{passwordHelperText}</p>
-            <label className={'txt-label-form-sign-up'}>비밀번호 확인 *</label>
-            <input className={'input-form-sign-up'} onChange={handleChangeConfirmPassword} type={'password'}/>
-            <p className={'txt-helper'}>{confirmPasswordHelperText}</p>
-            <label className={'txt-label-form-sign-up'}>닉네임 *</label>
-            <input className={'input-form-sign-up'} onChange={handleChangeNickname}/>
-            <p className={'txt-helper'}>{nicknameHelperText}</p>
-            <input id={'btn-submit-sign-up'} type={'submit'} value={'회원가입'} disabled={submitButtonDisable}
+            <input className={styles.signUpFormUserImageInput} id={'userImageInput'} type={'file'}
+                   onChange={handleChangeUserImage} required={true}/>
+            <label className={styles.signUpFormLabelText}>이메일 *</label>
+            <input className={styles.signUpFormInput} onChange={handleChangeEmail}/>
+            <p className={styles.signUpFormHelperText}>{emailHelperText}</p>
+            <label className={styles.signUpFormLabelText}>비밀번호 *</label>
+            <input className={styles.signUpFormInput} onChange={handleChangePassword} type={'password'}/>
+            <p className={styles.signUpFormHelperText}>{passwordHelperText}</p>
+            <label className={styles.signUpFormLabelText}>비밀번호 확인 *</label>
+            <input className={styles.signUpFormInput} onChange={handleChangeConfirmPassword} type={'password'}/>
+            <p className={styles.signUpFormHelperText}>{confirmPasswordHelperText}</p>
+            <label className={styles.signUpFormLabelText}>닉네임 *</label>
+            <input className={styles.signUpFormInput} onChange={handleChangeNickname}/>
+            <p className={styles.signUpFormHelperText}>{nicknameHelperText}</p>
+            <input className={styles.signUpFormSubmitButton} type={'submit'} value={'회원가입'}
+                   disabled={submitButtonDisable}
                    style={{backgroundColor: submitButtonColor}}/>
         </form>
-        <Link to={'/sign-in'} id={'txt-move-sign-up'}>로그인하러 가기</Link>
+        <p>
+            <Link to={'/sign-in'} className={styles.moveSignInText}>로그인하러 가기</Link>
+        </p>
     </div>);
 };
 

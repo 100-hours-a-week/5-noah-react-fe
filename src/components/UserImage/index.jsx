@@ -1,4 +1,4 @@
-import './index.css';
+import styles from './styles.module.css';
 
 const UserImage = ({
                        src,
@@ -7,7 +7,7 @@ const UserImage = ({
                        height,
                    }) => {
     return (<>
-        <img className={'img-user-header'} src={src} alt={alt} width={width} height={height}/>
+        <img className={styles.userImage} src={src} alt={alt} width={width} height={height}/>
     </>);
 };
 

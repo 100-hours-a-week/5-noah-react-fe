@@ -1,7 +1,7 @@
-import './index.css';
+import styles from './styles.module.css';
 
 const Body = ({children}) => {
-    return (<div className={'body'}>
+    return (<div className={styles.body}>
         {children}
     </div>);
 };
