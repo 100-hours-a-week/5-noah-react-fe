@@ -21,24 +21,6 @@
     font-weight: bold;
 }
 
-.editPostFormInput {
-    box-sizing: border-box;
-
-    width: 100%;
-    height: 33px;
-
-    border-radius: 4px;
-}
-
-.editPostFormTextarea {
-    box-sizing: border-box;
-
-    width: 100%;
-    height: 500px;
-
-    border-radius: 4px;
-}
-
 .editPostFormInputImageContainer {
     margin-bottom: 16px;
 
