@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
+import MainContainer from '../MainContainer';
 import BodyTitle from '../BodyTitle';
 import LabeledInput from '../LabeledInput';
 import HelperText from '../HelperText';
@@ -54,7 +55,7 @@ const SignInForm = () => {
         console.log('email: ', email, 'password:', password);
     };
 
-    return (<div className={styles.signInContainer}>
+    return (<MainContainer>
         <BodyTitle text={'로그인'}></BodyTitle>
         <form className={styles.signInForm} onSubmit={handleSignIn}>
             <LabeledInput labelText={'이메일'} name={'email'} type={'email'} onChange={handleChangeEmail}
@@ -67,7 +68,7 @@ const SignInForm = () => {
         <p>
             <Link to={'/sign-up'} className={styles.moveSignUpText}>회원가입</Link>
         </p>
-    </div>);
+    </MainContainer>);
 };
 
 export default SignInForm;

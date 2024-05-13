@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react';
 import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
 import validateNickname from '../../utils/validateNickname.mjs';
+import MainContainer from '../MainContainer';
 import BodyTitle from '../BodyTitle';
 import HelperText from '../HelperText';
 import LabeledInputUserImage from '../LabeledInputUserImage';
@@ -112,7 +113,7 @@ const SignUpForm = () => {
         }
     }, [userImageStatus, emailStatus, passwordStatus, confirmPasswordStatus, nicknameStatus]);
 
-    return (<div className={styles.signUpContainer}>
+    return (<MainContainer>
         <BodyTitle text={'회원가입'}></BodyTitle>
         <form className={styles.signUpForm}>
             <p className={styles.signUpFormLabelText}>프로필 사진</p>
@@ -136,7 +137,7 @@ const SignUpForm = () => {
         <p>
             <Link to={'/sign-in'} className={styles.moveSignInText}>로그인하러 가기</Link>
         </p>
-    </div>);
+    </MainContainer>);
 };
 
 export default SignUpForm;

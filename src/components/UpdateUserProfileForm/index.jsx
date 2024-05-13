@@ -1,4 +1,5 @@
 import styles from './styles.module.css';
+import MainContainer from '../MainContainer';
 import BodyTitle from '../BodyTitle';
 import LabeledInputUserImage from '../LabeledInputUserImage';
 import HelperText from '../HelperText';
@@ -7,7 +8,7 @@ import SubmitInput from '../SubmitInput';
 
 const UpdateUserProfileForm = () => {
 
-    return (<div className={styles.updateUserProfileContainer}>
+    return (<MainContainer>
         <BodyTitle text={'회원정보수정'}></BodyTitle>
         <form className={styles.updateUserProfileForm}>
             <p className={styles.updateUserProfileFormLabelText}>프로필 사진 *</p>
@@ -21,7 +22,7 @@ const UpdateUserProfileForm = () => {
             <SubmitInput backgroundColor={'#ACA0EB'} disabled={false} value={'수정하기'}/>
         </form>
         <p>회원탈퇴</p>
-    </div>);
+    </MainContainer>);
 };
 
 // 토스트 메시지, 모달 창은 이벤트 때 구현

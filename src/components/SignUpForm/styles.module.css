@@ -1,27 +1,7 @@
-.signUpContainer {
-    margin-top: 100px;
-    margin-bottom: 100px;
-}
-
 .signUpForm {
     width: 50%;
 
     margin: 0 auto;
-}
-
-.signUpFormUserImageInput {
-    display: none;
-}
-
-.signUpFormLabelImage {
-    width: 149px;
-    height: 149px;
-
-    /* 원 모양*/
-    border-radius: 50%;
-
-    /* 이미지 경계 벗어나면 숨기기 */
-    overflow: hidden;
 }
 
 .signUpFormLabelText {
