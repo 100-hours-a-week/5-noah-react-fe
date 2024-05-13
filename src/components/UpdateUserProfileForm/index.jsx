@@ -1,6 +1,7 @@
 import styles from './styles.module.css';
 import MainContainer from '../MainContainer';
 import BodyTitle from '../BodyTitle';
+import Label from '../Label';
 import LabeledInputUserImage from '../LabeledInputUserImage';
 import HelperText from '../HelperText';
 import LabeledInput from '../LabeledInput';
@@ -11,10 +12,10 @@ const UpdateUserProfileForm = () => {
     return (<MainContainer>
         <BodyTitle text={'회원정보수정'}></BodyTitle>
         <form className={styles.updateUserProfileForm}>
-            <p className={styles.updateUserProfileFormLabelText}>프로필 사진 *</p>
+            <Label labelText={'프로필 사진 *'}/>
             {/* 나중에 handler 추가 */}
             <LabeledInputUserImage name={'userImage'}/>
-            <p className={styles.updateUserProfileFormLabelText}>이메일</p>
+            <Label labelText={'이메일'}/>
             <p className={styles.userEmail}>49ehyeon42@gmail.com</p>
             <LabeledInput labelText={'닉네임'} type={'text'} name={'nickname'} placeholder={'닉네임을 입력하세요'}/>
             <HelperText text={'* helper text'}/>

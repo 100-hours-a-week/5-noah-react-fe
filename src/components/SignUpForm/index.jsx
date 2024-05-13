@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
+import validateConfirmPassword from '../../utils/validateConfirmPassword.mjs';
 import validateNickname from '../../utils/validateNickname.mjs';
 import MainContainer from '../MainContainer';
 import BodyTitle from '../BodyTitle';
@@ -10,6 +11,7 @@ import HelperText from '../HelperText';
 import LabeledInputUserImage from '../LabeledInputUserImage';
 import LabeledInput from '../LabeledInput';
 import SubmitInput from '../SubmitInput';
+import Label from '../Label';
 
 const SignUpForm = () => {
     const [userImageFile, setUserImageFile] = useState(null);
@@ -80,19 +82,11 @@ const SignUpForm = () => {
     }, [password]);
 
     useEffect(function updateConfirmPasswordHelperTextWhenInputConfirmPassword() {
-        // TODO: 비밀번호 수정에 중복되는 거 같은데?
-        // 비밀번호 확인 로직은 재사용이 적기 때문에 분리 X
-        if (confirmPassword.length === 0) {
-            setConfirmPasswordHelperText('* 비밀번호를 한번 더 입력해주세요.');
-            setConfirmPasswordStatus(false);
-        } else if (password !== confirmPassword) {
-            setConfirmPasswordHelperText('* 비밀번호가 다릅니다.');
-            setConfirmPasswordStatus(false);
-        } else {
-            setConfirmPasswordHelperText('');
-            setConfirmPasswordStatus(true);
-        }
-    }, [password, confirmPassword]); // ESLint 경고 떠서 password 추가
+        const result = validateConfirmPassword(password, confirmPassword);
+
+        setConfirmPasswordHelperText(result.message);
+        setConfirmPasswordStatus(result.status);
+    }, [password, confirmPassword]);
 
     useEffect(function updateNicknameHelperTextWhenInputNickname() {
         // 닉네임 중복 처리는 API 연결 후 구현
@@ -116,7 +110,7 @@ const SignUpForm = () => {
     return (<MainContainer>
         <BodyTitle text={'회원가입'}></BodyTitle>
         <form className={styles.signUpForm}>
-            <p className={styles.signUpFormLabelText}>프로필 사진</p>
+            <Label labelText={'프로필 사진'}/>
             <HelperText text={userImageHelperText}/>
             <LabeledInputUserImage name={'userImage'} onChange={handleChangeUserImageFile}/>
             <LabeledInput labelText={'이메일 *'} type={'email'} name={'email'} onChange={handleChangeEmail}

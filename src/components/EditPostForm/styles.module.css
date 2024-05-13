@@ -1,19 +1,7 @@
 .editPostForm {
-    width: 80%;
+    width: 70%;
 
     margin: 0 auto;
-}
-
-.editPostFormLabelText {
-    display: block;
-
-    text-align: left;
-
-    margin-top: 16px;
-    margin-bottom: 16px;
-
-    font-size: 15px;
-    font-weight: bold;
 }
 
 .editPostFormInputImageContainer {

@@ -5,6 +5,7 @@ import HelperText from '../HelperText';
 import SubmitInput from '../SubmitInput';
 import LabeledTextarea from '../LabeledTextarea';
 import MainContainer from '../MainContainer';
+import Label from '../Label';
 
 const EditPostForm = ({bodyTitleText}) => {
     // 조건에 따라 hooks이나 이벤트를 바꿀 수 있는가?
@@ -17,7 +18,7 @@ const EditPostForm = ({bodyTitleText}) => {
                           maxLength={26}/>
             <LabeledTextarea labelText={'내용 *'} textareaHeight={'300px'} name={'content'} placeholder={'내용을 입력해주세요'}/>
             <HelperText text={'* helper text'}/>
-            <label className={styles.editPostFormLabelText}>이미지</label>
+            <Label labelText={'이미지'}/>
             <div className={styles.editPostFormInputImageContainer}>
                 <input type={'file'}/>
             </div>
