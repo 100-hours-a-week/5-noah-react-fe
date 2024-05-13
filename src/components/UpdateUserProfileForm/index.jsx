@@ -1,6 +1,7 @@
 import styles from './styles.module.css';
 import BodyTitle from '../BodyTitle';
 import HelperText from '../HelperText';
+import LabeledInput from '../LabeledInput';
 
 const UpdateUserProfileForm = () => {
 
@@ -14,10 +15,9 @@ const UpdateUserProfileForm = () => {
             </label>
             <input className={styles.updateUserProfileFormUserImageInput} id={'userImageInput'} type={'file'}
                    required={true}/>
-            <label className={styles.updateUserProfileFormLabelText}>이메일</label>
+            <p className={styles.updateUserProfileFormLabelText}>이메일</p>
             <p className={styles.userEmail}>49ehyeon42@gmail.com</p>
-            <label className={styles.updateUserProfileFormLabelText}>닉네임</label>
-            <input className={styles.updateUserProfileFormInput} placeholder={'닉네임을 입력해주세요.'}/>
+            <LabeledInput labelText={'닉네임'} type={'text'} name={'nickname'} placeholder={'닉네임을 입력하세요'}/>
             <HelperText text={'* helper text'}/>
             <input className={styles.updateUserProfileFormSubmitButton} type={'submit'} value={'수정하기'}/>
         </form>

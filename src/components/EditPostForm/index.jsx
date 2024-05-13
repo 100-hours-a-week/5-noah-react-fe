@@ -1,5 +1,6 @@
 import styles from './styles.module.css';
 import BodyTitle from '../BodyTitle';
+import LabeledInput from '../LabeledInput';
 import HelperText from '../HelperText';
 
 const EditPostForm = ({bodyTitleText}) => {
@@ -9,8 +10,9 @@ const EditPostForm = ({bodyTitleText}) => {
     return (<div className={styles.editPostContainer}>
         <BodyTitle text={bodyTitleText}></BodyTitle>
         <form className={styles.editPostForm}>
-            <label className={styles.editPostFormLabelText}>제목 *</label>
-            <input className={styles.editPostFormInput}/>
+            <LabeledInput labelText={'제목 *'} type={'text'} name={'title'} placeholder={'제목을 입력해주세요 (최대 26글자)'}
+                          maxLength={26}/>
+            {/* 라벨과 textarea도 묶어서 컴포넌트로 관리하면 좋을 것 같음. */}
             <label className={styles.editPostFormLabelText}>내용 *</label>
             <textarea className={styles.editPostFormTextarea}></textarea>
             <HelperText text={'* helper text'}/>

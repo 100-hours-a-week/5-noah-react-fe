@@ -11,8 +11,8 @@ import UpdateUserPasswordPage from './pages/UpdateUserPassword';
 function App() {
     return (<div className={styles.App}>
         {/* TODO: image preview 분리 가능하다 판단, 분리 */}
-        {/* TODO: input 분리 가능하다 판단, 분리 */}
-        {/* TODO: label 분리 가능하다 판단, 분리 */}
+        {/* TODO: body 안 컨테이너 분리 생각 */}
+        {/* TODO: textarea도 분리 생각 */}
         {/* TODO: submit button 분리 가능하다 판단, 분리 */}
 
         <Routes>

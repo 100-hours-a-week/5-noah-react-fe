@@ -6,6 +6,7 @@ import validatePassword from '../../utils/validatePassword.mjs';
 import validateNickname from '../../utils/validateNickname.mjs';
 import BodyTitle from '../BodyTitle';
 import HelperText from '../HelperText';
+import LabeledInput from '../LabeledInput';
 
 const SignUpForm = () => {
     const DEFAULT_USER_IMAGE_PATH = '/etc-images/sign-up-default-background-image.png';
@@ -133,17 +134,18 @@ const SignUpForm = () => {
             </label>
             <input className={styles.signUpFormUserImageInput} id={'userImageInput'} type={'file'}
                    onChange={handleChangeUserImage} required={true}/>
-            <label className={styles.signUpFormLabelText}>이메일 *</label>
-            <input className={styles.signUpFormInput} onChange={handleChangeEmail}/>
+            <LabeledInput labelText={'이메일 *'} type={'email'} name={'email'} onChange={handleChangeEmail}
+                          placeholder={'이메일을 입력하세요'}/>
             <HelperText text={emailHelperText}/>
-            <label className={styles.signUpFormLabelText}>비밀번호 *</label>
-            <input className={styles.signUpFormInput} onChange={handleChangePassword} type={'password'}/>
+            <LabeledInput labelText={'비밀번호 *'} type={'password'} name={'password'} onChange={handleChangePassword}
+                          placeholder={'비밀번호를 입력하세요'}/>
             <HelperText text={passwordHelperText}/>
-            <label className={styles.signUpFormLabelText}>비밀번호 확인 *</label>
-            <input className={styles.signUpFormInput} onChange={handleChangeConfirmPassword} type={'password'}/>
+            <LabeledInput labelText={'비밀번호 확인 *'} type={'password'} name={'confirmPassword'}
+                          onChange={handleChangeConfirmPassword}
+                          placeholder={'비밀번호를 한번 더 입력하세요'}/>
             <HelperText text={confirmPasswordHelperText}/>
-            <label className={styles.signUpFormLabelText}>닉네임 *</label>
-            <input className={styles.signUpFormInput} onChange={handleChangeNickname}/>
+            <LabeledInput labelText={'닉네임 *'} type={'text'} name={'nickname'} onChange={handleChangeNickname}
+                          placeholder={'닉네임을 입력하세요'}/>
             <HelperText text={nicknameHelperText}/>
             <input className={styles.signUpFormSubmitButton} type={'submit'} value={'회원가입'}
                    disabled={submitButtonDisable}

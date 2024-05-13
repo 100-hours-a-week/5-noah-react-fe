@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react';
 import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
 import BodyTitle from '../BodyTitle';
+import LabeledInput from '../LabeledInput';
 import HelperText from '../HelperText';
 
 const SignInForm = () => {
@@ -13,11 +14,11 @@ const SignInForm = () => {
     const [submitButtonColor, setSubmitButtonColor] = useState('#ACA0EB');
     const [submitButtonDisable, setSubmitButtonDisable] = useState(true);
 
-    const handleEmailChange = (event) => {
+    const handleChangeEmail = (event) => {
         setEmail(event.target.value);
     };
 
-    const handlePasswordChange = (event) => {
+    const handleChangePassword = (event) => {
         setPassword(event.target.value);
     };
 
@@ -55,12 +56,10 @@ const SignInForm = () => {
     return (<div className={styles.signInContainer}>
         <BodyTitle text={'로그인'}></BodyTitle>
         <form className={styles.signInForm} onSubmit={handleSignIn}>
-            <label className={styles.signInFormLabelText}>이메일</label>
-            <input className={styles.signInFormInput} onChange={handleEmailChange} type={'email'}
-                   placeholder={'이메일을 입력하세요'}/>
-            <label className={styles.signInFormLabelText}>비밀번호</label>
-            <input className={styles.signInFormInput} onChange={handlePasswordChange} type={'password'}
-                   placeholder={'비밀번호를 입력하세요'}/>
+            <LabeledInput labelText={'이메일'} name={'email'} type={'email'} onChange={handleChangeEmail}
+                          placeholder={'이메일을 입력하세요'}/>
+            <LabeledInput labelText={'비밀번호'} name={'password'} type={'password'} onChange={handleChangePassword}
+                          placeholder={'비밀번호를 입력하세요'}/>
             <HelperText text={helperText}/>
             <input className={styles.signInFormSubmitButton} type={'submit'} value={'로그인'}
                    style={{backgroundColor: submitButtonColor}} disabled={submitButtonDisable}></input>
