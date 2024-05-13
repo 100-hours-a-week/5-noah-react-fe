@@ -39,16 +39,6 @@
     border-radius: 4px;
 }
 
-.editPostFormHelperText {
-    display: block;
-
-    text-align: left;
-
-    font-size: 12px;
-
-    color: red;
-}
-
 .editPostFormInputImageContainer {
     margin-bottom: 16px;
 

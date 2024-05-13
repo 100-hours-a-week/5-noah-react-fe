@@ -10,7 +10,6 @@ import UpdateUserPasswordPage from './pages/UpdateUserPassword';
 
 function App() {
     return (<div className={styles.App}>
-        {/* TODO: helperText 분리 가능하다 판단, 분리 */}
         {/* TODO: image preview 분리 가능하다 판단, 분리 */}
         {/* TODO: input 분리 가능하다 판단, 분리 */}
         {/* TODO: label 분리 가능하다 판단, 분리 */}

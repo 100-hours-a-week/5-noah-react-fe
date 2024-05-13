@@ -1,5 +1,6 @@
 import styles from './styles.module.css';
 import BodyTitle from '../BodyTitle';
+import HelperText from '../HelperText';
 
 const UpdateUserProfileForm = () => {
 
@@ -17,7 +18,7 @@ const UpdateUserProfileForm = () => {
             <p className={styles.userEmail}>49ehyeon42@gmail.com</p>
             <label className={styles.updateUserProfileFormLabelText}>닉네임</label>
             <input className={styles.updateUserProfileFormInput} placeholder={'닉네임을 입력해주세요.'}/>
-            <p className={styles.updateUserProfileFormHelperText}>* helper text</p>
+            <HelperText text={'* helper text'}/>
             <input className={styles.updateUserProfileFormSubmitButton} type={'submit'} value={'수정하기'}/>
         </form>
         <p>회원탈퇴</p>

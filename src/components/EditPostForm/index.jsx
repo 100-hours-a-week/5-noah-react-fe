@@ -1,5 +1,6 @@
 import styles from './styles.module.css';
 import BodyTitle from '../BodyTitle';
+import HelperText from '../HelperText';
 
 const EditPostForm = ({bodyTitleText}) => {
     // 조건에 따라 hooks이나 이벤트를 바꿀 수 있는가?
@@ -12,7 +13,7 @@ const EditPostForm = ({bodyTitleText}) => {
             <input className={styles.editPostFormInput}/>
             <label className={styles.editPostFormLabelText}>내용 *</label>
             <textarea className={styles.editPostFormTextarea}></textarea>
-            <p className={styles.editPostFormHelperText}>* helper text</p>
+            <HelperText text={'* helper text'}/>
             <label className={styles.editPostFormLabelText}>이미지</label>
             <div className={styles.editPostFormInputImageContainer}>
                 <input type={'file'}/>

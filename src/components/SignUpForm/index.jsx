@@ -5,6 +5,7 @@ import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
 import validateNickname from '../../utils/validateNickname.mjs';
 import BodyTitle from '../BodyTitle';
+import HelperText from '../HelperText';
 
 const SignUpForm = () => {
     const DEFAULT_USER_IMAGE_PATH = '/etc-images/sign-up-default-background-image.png';
@@ -126,7 +127,7 @@ const SignUpForm = () => {
         <BodyTitle text={'회원가입'}></BodyTitle>
         <form className={styles.signUpForm}>
             <p className={styles.signUpFormLabelText}>프로필 사진</p>
-            <p className={styles.signUpFormHelperText} id={'txt-helper-image'}>{userImageHelperText}</p>
+            <HelperText text={userImageHelperText}/>
             <label htmlFor={'userImageInput'}>
                 <img className={styles.signUpFormLabelImage} src={userImageSrc} alt={'사용자 배경 사진'}/>
             </label>
@@ -134,16 +135,16 @@ const SignUpForm = () => {
                    onChange={handleChangeUserImage} required={true}/>
             <label className={styles.signUpFormLabelText}>이메일 *</label>
             <input className={styles.signUpFormInput} onChange={handleChangeEmail}/>
-            <p className={styles.signUpFormHelperText}>{emailHelperText}</p>
+            <HelperText text={emailHelperText}/>
             <label className={styles.signUpFormLabelText}>비밀번호 *</label>
             <input className={styles.signUpFormInput} onChange={handleChangePassword} type={'password'}/>
-            <p className={styles.signUpFormHelperText}>{passwordHelperText}</p>
+            <HelperText text={passwordHelperText}/>
             <label className={styles.signUpFormLabelText}>비밀번호 확인 *</label>
             <input className={styles.signUpFormInput} onChange={handleChangeConfirmPassword} type={'password'}/>
-            <p className={styles.signUpFormHelperText}>{confirmPasswordHelperText}</p>
+            <HelperText text={confirmPasswordHelperText}/>
             <label className={styles.signUpFormLabelText}>닉네임 *</label>
             <input className={styles.signUpFormInput} onChange={handleChangeNickname}/>
-            <p className={styles.signUpFormHelperText}>{nicknameHelperText}</p>
+            <HelperText text={nicknameHelperText}/>
             <input className={styles.signUpFormSubmitButton} type={'submit'} value={'회원가입'}
                    disabled={submitButtonDisable}
                    style={{backgroundColor: submitButtonColor}}/>

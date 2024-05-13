@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react';
 import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
 import BodyTitle from '../BodyTitle';
+import HelperText from '../HelperText';
 
 const SignInForm = () => {
     const [email, setEmail] = useState('');
@@ -60,7 +61,7 @@ const SignInForm = () => {
             <label className={styles.signInFormLabelText}>비밀번호</label>
             <input className={styles.signInFormInput} onChange={handlePasswordChange} type={'password'}
                    placeholder={'비밀번호를 입력하세요'}/>
-            <p className={styles.signInFormHelperText}>{helperText}</p>
+            <HelperText text={helperText}/>
             <input className={styles.signInFormSubmitButton} type={'submit'} value={'로그인'}
                    style={{backgroundColor: submitButtonColor}} disabled={submitButtonDisable}></input>
         </form>
