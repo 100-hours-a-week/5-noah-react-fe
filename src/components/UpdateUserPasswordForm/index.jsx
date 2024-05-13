@@ -2,6 +2,7 @@ import styles from './styles.module.css';
 import BodyTitle from '../BodyTitle';
 import HelperText from '../HelperText';
 import LabeledInput from '../LabeledInput';
+import SubmitInput from '../SubmitInput';
 
 const UpdateUserPasswordForm = () => {
 
@@ -13,7 +14,7 @@ const UpdateUserPasswordForm = () => {
             <LabeledInput labelText={'비밀번호 확인'} type={'password'} name={'confirmPassword'}
                           placeholder={'비밀번호를 한번 더 입력하세요'}/>
             <HelperText text={'* helper text'}/>
-            <input className={styles.updateUserPasswordFormSubmitButton} type={'submit'} value={'수정하기'}/>
+            <SubmitInput backgroundColor={'#ACA0EB'} disabled={true} value={'수정하기'}/>
         </form>
     </div>);
 };

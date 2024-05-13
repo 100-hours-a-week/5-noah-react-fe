@@ -2,6 +2,7 @@ import styles from './styles.module.css';
 import BodyTitle from '../BodyTitle';
 import HelperText from '../HelperText';
 import LabeledInput from '../LabeledInput';
+import SubmitInput from '../SubmitInput';
 
 const UpdateUserProfileForm = () => {
 
@@ -19,7 +20,8 @@ const UpdateUserProfileForm = () => {
             <p className={styles.userEmail}>49ehyeon42@gmail.com</p>
             <LabeledInput labelText={'닉네임'} type={'text'} name={'nickname'} placeholder={'닉네임을 입력하세요'}/>
             <HelperText text={'* helper text'}/>
-            <input className={styles.updateUserProfileFormSubmitButton} type={'submit'} value={'수정하기'}/>
+            {/* 상태 추가 시 동적으로 변경 */}
+            <SubmitInput backgroundColor={'#ACA0EB'} disabled={false} value={'수정하기'}/>
         </form>
         <p>회원탈퇴</p>
     </div>);

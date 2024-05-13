@@ -2,6 +2,7 @@ import styles from './styles.module.css';
 import BodyTitle from '../BodyTitle';
 import LabeledInput from '../LabeledInput';
 import HelperText from '../HelperText';
+import SubmitInput from '../SubmitInput';
 
 const EditPostForm = ({bodyTitleText}) => {
     // 조건에 따라 hooks이나 이벤트를 바꿀 수 있는가?
@@ -20,7 +21,8 @@ const EditPostForm = ({bodyTitleText}) => {
             <div className={styles.editPostFormInputImageContainer}>
                 <input type={'file'}/>
             </div>
-            <input className={styles.editPostFormSubmitButton} type={'submit'} value={'완료'}/>
+            {/* 이벤트 추가 시 동적으로 활용 */}
+            <SubmitInput backgroundColor={'#ACA0EB'} disabled={true} value={'완료'}></SubmitInput>
         </form>
     </div>);
 };

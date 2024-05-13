@@ -11,15 +11,16 @@ import UpdateUserPasswordPage from './pages/UpdateUserPassword';
 function App() {
     return (<div className={styles.App}>
         {/* TODO: image preview 분리 가능하다 판단, 분리 */}
-        {/* TODO: body 안 컨테이너 분리 생각 */}
         {/* TODO: textarea도 분리 생각 */}
-        {/* TODO: submit button 분리 가능하다 판단, 분리 */}
+        {/* TODO: label이 분리되어 있어야 image preview, textarea도 사용할 수 있기 때문에 선행 분리 필요 */}
+        {/* TODO: body 안 컨테이너 분리 생각 */}
 
         <Routes>
             <Route path={'/'} element={<SignInPage/>}/>
             <Route path={'/sign-in'} element={<SignInPage/>}/>
             <Route path={'/sign-up'} element={<SignUpPage/>}/>
             <Route path={'/posts'} element={<PostsPage/>}/>
+            {/* TODO: CreatePost, UpdatePost 이름 변경 필요*/}
             <Route path={'/posts/create'} element={<CreatePost/>}/>
             <Route path={'/posts/update'} element={<UpdatePost/>}/>
             <Route path={'/users/update/profile'} element={<UpdateUserProfilePage/>}/>

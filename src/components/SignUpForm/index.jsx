@@ -7,6 +7,7 @@ import validateNickname from '../../utils/validateNickname.mjs';
 import BodyTitle from '../BodyTitle';
 import HelperText from '../HelperText';
 import LabeledInput from '../LabeledInput';
+import SubmitInput from '../SubmitInput';
 
 const SignUpForm = () => {
     const DEFAULT_USER_IMAGE_PATH = '/etc-images/sign-up-default-background-image.png';
@@ -33,8 +34,8 @@ const SignUpForm = () => {
     const [nicknameHelperText, setNicknameHelperText] = useState('');
     const [nicknameStatus, setNicknameStatus] = useState(false);
 
-    const [submitButtonDisable, setSubmitButtonDisable] = useState(true);
-    const [submitButtonColor, setSubmitButtonColor] = useState('#ACA0EB');
+    const [submitInputDisable, setSubmitInputDisable] = useState(true);
+    const [submitInputBackgroundColor, setSubmitInputBackgroundColor] = useState('#ACA0EB');
 
     const handleChangeUserImage = (event) => {
         if (event.target.files && event.target.files[0]) {
@@ -114,13 +115,13 @@ const SignUpForm = () => {
         setNicknameStatus(result.status);
     }, [nickname]);
 
-    useEffect(function updateSubmitButtonWhenInput() {
+    useEffect(function updateSubmitInputWhenOtherInput() {
         if (userImageStatus && emailStatus && passwordStatus && confirmPasswordStatus && nicknameStatus) {
-            setSubmitButtonDisable(false);
-            setSubmitButtonColor('#7F6AEE');
+            setSubmitInputDisable(false);
+            setSubmitInputBackgroundColor('#7F6AEE');
         } else {
-            setSubmitButtonDisable(true);
-            setSubmitButtonColor('#ACA0EB');
+            setSubmitInputDisable(true);
+            setSubmitInputBackgroundColor('#ACA0EB');
         }
     }, [userImageStatus, emailStatus, passwordStatus, confirmPasswordStatus, nicknameStatus]);
 
@@ -147,9 +148,7 @@ const SignUpForm = () => {
             <LabeledInput labelText={'닉네임 *'} type={'text'} name={'nickname'} onChange={handleChangeNickname}
                           placeholder={'닉네임을 입력하세요'}/>
             <HelperText text={nicknameHelperText}/>
-            <input className={styles.signUpFormSubmitButton} type={'submit'} value={'회원가입'}
-                   disabled={submitButtonDisable}
-                   style={{backgroundColor: submitButtonColor}}/>
+            <SubmitInput backgroundColor={submitInputBackgroundColor} disabled={submitInputDisable} value={'회원가입'}/>
         </form>
         <p>
             <Link to={'/sign-in'} className={styles.moveSignInText}>로그인하러 가기</Link>
