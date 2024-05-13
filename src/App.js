@@ -10,8 +10,9 @@ import UpdateUserPasswordPage from './pages/UpdateUserPassword';
 
 function App() {
     return (<div className={styles.App}>
-        {/* TODO: image preview 분리 가능하다 판단, 분리 */}
         {/* TODO: body 안 컨테이너 분리 생각 */}
+        {/* TODO: 일부 label 역할을 수행하는 <p> 태그들 Label로 변경 */}
+        {/* TODO: 비밀번호 유효성 검사 추가 */}
 
         <Routes>
             <Route path={'/'} element={<SignInPage/>}/>

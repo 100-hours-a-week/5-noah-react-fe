@@ -6,15 +6,12 @@ import validatePassword from '../../utils/validatePassword.mjs';
 import validateNickname from '../../utils/validateNickname.mjs';
 import BodyTitle from '../BodyTitle';
 import HelperText from '../HelperText';
+import LabeledInputUserImage from '../LabeledInputUserImage';
 import LabeledInput from '../LabeledInput';
 import SubmitInput from '../SubmitInput';
 
 const SignUpForm = () => {
-    const DEFAULT_USER_IMAGE_PATH = '/etc-images/sign-up-default-background-image.png';
-
-    const fileReader = new FileReader();
-
-    const [userImageSrc, setUserImageSrc] = useState(DEFAULT_USER_IMAGE_PATH);
+    const [userImageFile, setUserImageFile] = useState(null);
     const [userImageHelperText, setUserImageHelperText] = useState('');
     const [userImageStatus, setUserImageStatus] = useState(false);
 
@@ -37,18 +34,8 @@ const SignUpForm = () => {
     const [submitInputDisable, setSubmitInputDisable] = useState(true);
     const [submitInputBackgroundColor, setSubmitInputBackgroundColor] = useState('#ACA0EB');
 
-    const handleChangeUserImage = (event) => {
-        if (event.target.files && event.target.files[0]) {
-            fileReader.onload = () => {
-                if (typeof fileReader.result === 'string') {
-                    setUserImageSrc(fileReader.result);
-                }
-            };
-
-            fileReader.readAsDataURL(event.target.files[0]);
-        } else {
-            setUserImageSrc(DEFAULT_USER_IMAGE_PATH);
-        }
+    const handleChangeUserImageFile = (file) => {
+        setUserImageFile(file);
     };
 
     const handleChangeEmail = (event) => {
@@ -68,15 +55,14 @@ const SignUpForm = () => {
     };
 
     useEffect(function updateUserImageHelperTextWhenInputUserImage() {
-        // 재사용 어려워서 분리 X
-        if (userImageSrc !== DEFAULT_USER_IMAGE_PATH) {
+        if (userImageFile) {
             setUserImageHelperText('');
             setUserImageStatus(true);
         } else {
             setUserImageHelperText('* 프로필 사진을 추가해주세요.');
             setUserImageStatus(false);
         }
-    }, [userImageSrc]);
+    }, [userImageFile]);
 
     useEffect(function updateEmailHelperTextWhenInputEmail() {
         const result = validateEmail(email);
@@ -93,6 +79,7 @@ const SignUpForm = () => {
     }, [password]);
 
     useEffect(function updateConfirmPasswordHelperTextWhenInputConfirmPassword() {
+        // TODO: 비밀번호 수정에 중복되는 거 같은데?
         // 비밀번호 확인 로직은 재사용이 적기 때문에 분리 X
         if (confirmPassword.length === 0) {
             setConfirmPasswordHelperText('* 비밀번호를 한번 더 입력해주세요.');
@@ -130,11 +117,7 @@ const SignUpForm = () => {
         <form className={styles.signUpForm}>
             <p className={styles.signUpFormLabelText}>프로필 사진</p>
             <HelperText text={userImageHelperText}/>
-            <label htmlFor={'userImageInput'}>
-                <img className={styles.signUpFormLabelImage} src={userImageSrc} alt={'사용자 배경 사진'}/>
-            </label>
-            <input className={styles.signUpFormUserImageInput} id={'userImageInput'} type={'file'}
-                   onChange={handleChangeUserImage} required={true}/>
+            <LabeledInputUserImage name={'userImage'} onChange={handleChangeUserImageFile}/>
             <LabeledInput labelText={'이메일 *'} type={'email'} name={'email'} onChange={handleChangeEmail}
                           placeholder={'이메일을 입력하세요'}/>
             <HelperText text={emailHelperText}/>
