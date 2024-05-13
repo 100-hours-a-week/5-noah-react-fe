@@ -2,7 +2,7 @@ import Header from '../../components/Header';
 import Body from '../../components/Body';
 import EditPostForm from '../../components/EditPostForm';
 
-const UpdatePost = () => {
+const UpdatePostPage = () => {
     return (<>
         <Header useBackButton={true} useUserImage={true} imageSrc={'/user-images/default-user-image.png'}></Header>
         <Body>
@@ -11,4 +11,4 @@ const UpdatePost = () => {
     </>);
 };
 
-export default UpdatePost;
+export default UpdatePostPage;
