@@ -1,4 +1,5 @@
 import styles from './styles.module.css';
+import Label from '../Label';
 
 const LabeledInput = ({
                           labelText,
@@ -11,7 +12,7 @@ const LabeledInput = ({
                           maxLength,
                       }) => {
     return (<>
-        <label className={styles.label} htmlFor={name}>{labelText}</label>
+        <Label htmlFor={name} labelText={labelText}/>
         <input className={styles.input} type={type} id={name} name={name} value={value} onChange={onChange}
                placeholder={placeholder} minLength={minLength} maxLength={maxLength}/>
     </>);
