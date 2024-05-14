@@ -11,6 +11,8 @@ import UpdateUserPasswordPage from './pages/UpdateUserPassword';
 
 function App() {
     return (<div className={styles.App}>
+        {/* TODO: 작은 버튼, 중간 버튼 겹치는 부분 보임, 리팩토링 필요 */}
+
         <Routes>
             {/*<Route path={'/'} element={<SignInPage/>}/>*/}
             <Route path={'/sign-in'} element={<SignInPage/>}/>
