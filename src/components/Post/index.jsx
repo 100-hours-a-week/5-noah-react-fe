@@ -1,5 +1,6 @@
 import styles from './styles.module.css';
 import UserImage from '../UserImage';
+import SmallButton from '../SmallButton';
 import updateNumberByUnit from '../../utils/updateNumberByUnit.mjs';
 
 const Post = ({
@@ -23,8 +24,8 @@ const Post = ({
                     <span>{createdDate}</span>
                 </div>
                 <div>
-                    <button className={styles.button}>수정</button>
-                    <button className={styles.button}>삭제</button>
+                    <SmallButton value={'수정'}/>
+                    <SmallButton value={'삭제'}/>
                 </div>
             </div>
         </div>

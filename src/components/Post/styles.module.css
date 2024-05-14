@@ -27,18 +27,6 @@
     font-weight: bold;
 }
 
-.button {
-    margin-left: 5px;
-
-    border-width: 1px;
-    border-color: #aca0eb;
-    border-radius: 8px;
-
-    background-color: #ffffff;
-
-    font-size: 15px;
-}
-
 .horizontalRule {
     opacity: 0.16;
 }

@@ -22,18 +22,6 @@
     font-weight: bold;
 }
 
-.button {
-    margin-left: 5px;
-
-    border-width: 1px;
-    border-color: #aca0eb;
-    border-radius: 8px;
-
-    background-color: #ffffff;
-
-    font-size: 15px;
-}
-
 .content {
     padding-left: 46px;
     padding-right: 46px;
