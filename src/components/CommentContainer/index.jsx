@@ -1,4 +1,5 @@
 import styles from './styles.module.css';
+import MediumButton from '../MediumButton';
 import Comment from '../Comment';
 
 const CommentContainer = () => {
@@ -7,7 +8,7 @@ const CommentContainer = () => {
             <textarea className={styles.textarea} placeholder={'댓글을 남겨쥬세요!'}/>
             <hr className={styles.horizontalRule}></hr>
             <div className={styles.createCommentFormSubmitButtonContainer}>
-                <button className={styles.createCommentFormSubmitButton}>댓글 등록</button>
+                <MediumButton value={'댓글 등록'}/>
             </div>
         </form>
         <div className={styles.comments}>

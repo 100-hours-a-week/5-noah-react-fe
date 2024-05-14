@@ -14,18 +14,3 @@
 .moveEditButtonContainer {
     text-align: right;
 }
-
-.moveEditButton {
-    margin: 5px 10px 5px 5px;
-
-    width: 138px;
-    height: 39px;
-
-    border: none;
-    border-radius: 16px;
-
-    background-color: #aca0eb;
-
-    color: #ffffff;
-    font-size: 16px;
-}
