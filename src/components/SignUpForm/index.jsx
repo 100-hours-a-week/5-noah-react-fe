@@ -1,17 +1,20 @@
+import styles from './styles.module.css';
 import {Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
+import validateConfirmPassword from '../../utils/validateConfirmPassword.mjs';
 import validateNickname from '../../utils/validateNickname.mjs';
-
-import styles from './styles.module.css';
+import MainContainer from '../MainContainer';
+import BodyTitle from '../BodyTitle';
+import HelperText from '../HelperText';
+import LabeledInputUserImage from '../LabeledInputUserImage';
+import LabeledInput from '../LabeledInput';
+import SubmitInput from '../SubmitInput';
+import Label from '../Label';
 
 const SignUpForm = () => {
-    const DEFAULT_USER_IMAGE_PATH = '/etc-images/sign-up-default-background-image.png';
-
-    const fileReader = new FileReader();
-
-    const [userImageSrc, setUserImageSrc] = useState(DEFAULT_USER_IMAGE_PATH);
+    const [userImageFile, setUserImageFile] = useState(null);
     const [userImageHelperText, setUserImageHelperText] = useState('');
     const [userImageStatus, setUserImageStatus] = useState(false);
 
@@ -31,21 +34,11 @@ const SignUpForm = () => {
     const [nicknameHelperText, setNicknameHelperText] = useState('');
     const [nicknameStatus, setNicknameStatus] = useState(false);
 
-    const [submitButtonDisable, setSubmitButtonDisable] = useState(true);
-    const [submitButtonColor, setSubmitButtonColor] = useState('#ACA0EB');
+    const [submitInputDisable, setSubmitInputDisable] = useState(true);
+    const [submitInputBackgroundColor, setSubmitInputBackgroundColor] = useState('#ACA0EB');
 
-    const handleChangeUserImage = (event) => {
-        if (event.target.files && event.target.files[0]) {
-            fileReader.onload = () => {
-                if (typeof fileReader.result === 'string') {
-                    setUserImageSrc(fileReader.result);
-                }
-            };
-
-            fileReader.readAsDataURL(event.target.files[0]);
-        } else {
-            setUserImageSrc(DEFAULT_USER_IMAGE_PATH);
-        }
+    const handleChangeUserImageFile = (file) => {
+        setUserImageFile(file);
     };
 
     const handleChangeEmail = (event) => {
@@ -65,15 +58,14 @@ const SignUpForm = () => {
     };
 
     useEffect(function updateUserImageHelperTextWhenInputUserImage() {
-        // 재사용 어려워서 분리 X
-        if (userImageSrc !== DEFAULT_USER_IMAGE_PATH) {
+        if (userImageFile) {
             setUserImageHelperText('');
             setUserImageStatus(true);
         } else {
             setUserImageHelperText('* 프로필 사진을 추가해주세요.');
             setUserImageStatus(false);
         }
-    }, [userImageSrc]);
+    }, [userImageFile]);
 
     useEffect(function updateEmailHelperTextWhenInputEmail() {
         const result = validateEmail(email);
@@ -90,18 +82,11 @@ const SignUpForm = () => {
     }, [password]);
 
     useEffect(function updateConfirmPasswordHelperTextWhenInputConfirmPassword() {
-        // 비밀번호 확인 로직은 재사용이 적기 때문에 분리 X
-        if (confirmPassword.length === 0) {
-            setConfirmPasswordHelperText('* 비밀번호를 한번 더 입력해주세요.');
-            setConfirmPasswordStatus(false);
-        } else if (password !== confirmPassword) {
-            setConfirmPasswordHelperText('* 비밀번호가 다릅니다.');
-            setConfirmPasswordStatus(false);
-        } else {
-            setConfirmPasswordHelperText('');
-            setConfirmPasswordStatus(true);
-        }
-    }, [password, confirmPassword]); // ESLint 경고 떠서 password 추가
+        const result = validateConfirmPassword(password, confirmPassword);
+
+        setConfirmPasswordHelperText(result.message);
+        setConfirmPasswordStatus(result.status);
+    }, [password, confirmPassword]);
 
     useEffect(function updateNicknameHelperTextWhenInputNickname() {
         // 닉네임 중복 처리는 API 연결 후 구현
@@ -112,46 +97,41 @@ const SignUpForm = () => {
         setNicknameStatus(result.status);
     }, [nickname]);
 
-    useEffect(function updateSubmitButtonWhenInput() {
+    useEffect(function updateSubmitInputWhenOtherInput() {
         if (userImageStatus && emailStatus && passwordStatus && confirmPasswordStatus && nicknameStatus) {
-            setSubmitButtonDisable(false);
-            setSubmitButtonColor('#7F6AEE');
+            setSubmitInputDisable(false);
+            setSubmitInputBackgroundColor('#7F6AEE');
         } else {
-            setSubmitButtonDisable(true);
-            setSubmitButtonColor('#ACA0EB');
+            setSubmitInputDisable(true);
+            setSubmitInputBackgroundColor('#ACA0EB');
         }
     }, [userImageStatus, emailStatus, passwordStatus, confirmPasswordStatus, nicknameStatus]);
 
-    return (<div className={styles.signUpContainer}>
-        <p className={styles.signUpContainerTitleText}>회원가입</p>
+    return (<MainContainer>
+        <BodyTitle text={'회원가입'}></BodyTitle>
         <form className={styles.signUpForm}>
-            <p className={styles.signUpFormLabelText}>프로필 사진</p>
-            <p className={styles.signUpFormHelperText} id={'txt-helper-image'}>{userImageHelperText}</p>
-            <label htmlFor={'userImageInput'}>
-                <img className={styles.signUpFormLabelImage} src={userImageSrc} alt={'사용자 배경 사진'}/>
-            </label>
-            <input className={styles.signUpFormUserImageInput} id={'userImageInput'} type={'file'}
-                   onChange={handleChangeUserImage} required={true}/>
-            <label className={styles.signUpFormLabelText}>이메일 *</label>
-            <input className={styles.signUpFormInput} onChange={handleChangeEmail}/>
-            <p className={styles.signUpFormHelperText}>{emailHelperText}</p>
-            <label className={styles.signUpFormLabelText}>비밀번호 *</label>
-            <input className={styles.signUpFormInput} onChange={handleChangePassword} type={'password'}/>
-            <p className={styles.signUpFormHelperText}>{passwordHelperText}</p>
-            <label className={styles.signUpFormLabelText}>비밀번호 확인 *</label>
-            <input className={styles.signUpFormInput} onChange={handleChangeConfirmPassword} type={'password'}/>
-            <p className={styles.signUpFormHelperText}>{confirmPasswordHelperText}</p>
-            <label className={styles.signUpFormLabelText}>닉네임 *</label>
-            <input className={styles.signUpFormInput} onChange={handleChangeNickname}/>
-            <p className={styles.signUpFormHelperText}>{nicknameHelperText}</p>
-            <input className={styles.signUpFormSubmitButton} type={'submit'} value={'회원가입'}
-                   disabled={submitButtonDisable}
-                   style={{backgroundColor: submitButtonColor}}/>
+            <Label labelText={'프로필 사진'}/>
+            <HelperText text={userImageHelperText}/>
+            <LabeledInputUserImage name={'userImage'} onChange={handleChangeUserImageFile}/>
+            <LabeledInput labelText={'이메일 *'} type={'email'} name={'email'} onChange={handleChangeEmail}
+                          placeholder={'이메일을 입력하세요'}/>
+            <HelperText text={emailHelperText}/>
+            <LabeledInput labelText={'비밀번호 *'} type={'password'} name={'password'} onChange={handleChangePassword}
+                          placeholder={'비밀번호를 입력하세요'}/>
+            <HelperText text={passwordHelperText}/>
+            <LabeledInput labelText={'비밀번호 확인 *'} type={'password'} name={'confirmPassword'}
+                          onChange={handleChangeConfirmPassword}
+                          placeholder={'비밀번호를 한번 더 입력하세요'}/>
+            <HelperText text={confirmPasswordHelperText}/>
+            <LabeledInput labelText={'닉네임 *'} type={'text'} name={'nickname'} onChange={handleChangeNickname}
+                          placeholder={'닉네임을 입력하세요'}/>
+            <HelperText text={nicknameHelperText}/>
+            <SubmitInput backgroundColor={submitInputBackgroundColor} disabled={submitInputDisable} value={'회원가입'}/>
         </form>
         <p>
             <Link to={'/sign-in'} className={styles.moveSignInText}>로그인하러 가기</Link>
         </p>
-    </div>);
+    </MainContainer>);
 };
 
 export default SignUpForm;

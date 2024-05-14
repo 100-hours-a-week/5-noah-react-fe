@@ -1,15 +1,14 @@
 import Header from '../../components/Header';
 import Body from '../../components/Body';
-import SimplePostContainer from '../../components/SimplePostContainer';
+import UpdateUserProfileForm from '../../components/UpdateUserProfileForm';
 
-const PostsPage = () => {
-
+const UpdateUserProfilePage = () => {
     return (<>
         <Header useUserImage={true} imageSrc={'/user-images/default-user-image.png'}></Header>
         <Body>
-            <SimplePostContainer></SimplePostContainer>
+            <UpdateUserProfileForm></UpdateUserProfileForm>
         </Body>
     </>);
 };
 
-export default PostsPage;
+export default UpdateUserProfilePage;
