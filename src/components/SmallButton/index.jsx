@@ -4,8 +4,9 @@ import styles from './styles.module.css';
 const SmallButton = ({
                          disable,
                          value,
+                         onClick,
                      }) => {
-    return (<button className={styles.button} disabled={disable}>{value}</button>);
+    return (<button className={styles.button} disabled={disable} onClick={onClick}>{value}</button>);
 };
 
 export default SmallButton;

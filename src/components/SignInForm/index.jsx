@@ -13,7 +13,6 @@ const SignInForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [helperText, setHelperText] = useState('');
-    const [submitInputColor, setSubmitInputColor] = useState('');
     const [submitInputDisable, setSubmitInputDisable] = useState(true);
 
     const handleChangeEmail = (event) => {
@@ -29,7 +28,6 @@ const SignInForm = () => {
 
         if (!validateEmailResult.status) {
             setHelperText(validateEmailResult.message);
-            setSubmitInputColor('#ACA0EB');
             setSubmitInputDisable(true);
             return;
         }
@@ -38,13 +36,11 @@ const SignInForm = () => {
 
         if (!validatePasswordResult.status) {
             setHelperText(validatePasswordResult.message);
-            setSubmitInputColor('#ACA0EB');
             setSubmitInputDisable(true);
             return;
         }
 
         setHelperText('');
-        setSubmitInputColor('#7F6AEE');
         setSubmitInputDisable(false);
     }, [email, password]);
 
@@ -63,7 +59,7 @@ const SignInForm = () => {
             <LabeledInput labelText={'비밀번호'} name={'password'} type={'password'} onChange={handleChangePassword}
                           placeholder={'비밀번호를 입력하세요'}/>
             <HelperText text={helperText}/>
-            <SubmitInput backgroundColor={submitInputColor} disabled={submitInputDisable} value={'로그인'}/>
+            <SubmitInput disabled={submitInputDisable} value={'로그인'}/>
         </form>
         <p>
             <Link to={'/sign-up'} className={styles.moveSignUpText}>회원가입</Link>

@@ -38,8 +38,9 @@ const LabeledInputUserImage = ({
     };
 
     return (<>
-        <label htmlFor={name}>
+        <label htmlFor={name} className={styles.imageContainer}>
             <img className={styles.previewImage} src={imageSrc} alt={'사용자 사진'}/>
+            <span className={styles.hoverText}>변경</span>
         </label>
         <input className={styles.input} id={name} type={'file'} onChange={handleChangeUserImage}/>
     </>);
