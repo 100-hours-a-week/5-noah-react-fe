@@ -1,9 +1,15 @@
 import styles from './styles.module.css';
+import {useNavigate} from 'react-router-dom';
 import SimplePost from '../SimplePost';
 import MainContainer from '../MainContainer';
 import MediumButton from '../MediumButton';
 
 const SimplePostContainer = () => {
+    const navigate = useNavigate();
+
+    const handleClickButton = () => {
+        navigate('/posts/create');
+    };
 
     return (<MainContainer>
         <div className={styles.SimplePostWrap}>
@@ -11,8 +17,7 @@ const SimplePostContainer = () => {
             <p className={styles.simplePostContainerTitle}>안녕하세요,</p>
             <p className={styles.simplePostContainerTitle}>아무 말 대잔치 <b>게시판</b> 입니다.</p>
             <div className={styles.moveEditButtonContainer}>
-                {/* 나중에 버튼 이벤트 처리 */}
-                <MediumButton value={'게시글 작성'}/>
+                <MediumButton value={'게시글 작성'} disable={false} onClick={handleClickButton}/>
             </div>
             {/* 나중에 반복문으로 처리 */}
             <SimplePost title={'test Title 1'} likes={1} comments={2} views={3} createdDate={'2021-01-01 00:00:01'}

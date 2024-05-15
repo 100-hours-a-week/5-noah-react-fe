@@ -12,6 +12,7 @@ import LabeledInputUserImage from '../LabeledInputUserImage';
 import LabeledInput from '../LabeledInput';
 import SubmitInput from '../SubmitInput';
 import Label from '../Label';
+import validateUserImageFile from '../../utils/validateUserImageFile.mjs';
 
 const SignUpForm = () => {
     const [userImageFile, setUserImageFile] = useState(null);
@@ -34,8 +35,7 @@ const SignUpForm = () => {
     const [nicknameHelperText, setNicknameHelperText] = useState('');
     const [nicknameStatus, setNicknameStatus] = useState(false);
 
-    const [submitInputDisable, setSubmitInputDisable] = useState(true);
-    const [submitInputBackgroundColor, setSubmitInputBackgroundColor] = useState('#ACA0EB');
+    const [submitInputDisabled, setSubmitInputDisabled] = useState(true);
 
     const handleChangeUserImageFile = (file) => {
         setUserImageFile(file);
@@ -58,13 +58,13 @@ const SignUpForm = () => {
     };
 
     useEffect(function updateUserImageHelperTextWhenInputUserImage() {
-        if (userImageFile) {
-            setUserImageHelperText('');
-            setUserImageStatus(true);
-        } else {
-            setUserImageHelperText('* 프로필 사진을 추가해주세요.');
-            setUserImageStatus(false);
-        }
+        const {
+            status,
+            message,
+        } = validateUserImageFile(userImageFile);
+
+        setUserImageHelperText(message);
+        setUserImageStatus(status);
     }, [userImageFile]);
 
     useEffect(function updateEmailHelperTextWhenInputEmail() {
@@ -98,13 +98,7 @@ const SignUpForm = () => {
     }, [nickname]);
 
     useEffect(function updateSubmitInputWhenOtherInput() {
-        if (userImageStatus && emailStatus && passwordStatus && confirmPasswordStatus && nicknameStatus) {
-            setSubmitInputDisable(false);
-            setSubmitInputBackgroundColor('#7F6AEE');
-        } else {
-            setSubmitInputDisable(true);
-            setSubmitInputBackgroundColor('#ACA0EB');
-        }
+        setSubmitInputDisabled(!(userImageStatus && emailStatus && passwordStatus && confirmPasswordStatus && nicknameStatus));
     }, [userImageStatus, emailStatus, passwordStatus, confirmPasswordStatus, nicknameStatus]);
 
     return (<MainContainer>
@@ -126,7 +120,7 @@ const SignUpForm = () => {
             <LabeledInput labelText={'닉네임 *'} type={'text'} name={'nickname'} onChange={handleChangeNickname}
                           placeholder={'닉네임을 입력하세요'}/>
             <HelperText text={nicknameHelperText}/>
-            <SubmitInput backgroundColor={submitInputBackgroundColor} disabled={submitInputDisable} value={'회원가입'}/>
+            <SubmitInput disabled={submitInputDisabled} value={'회원가입'}/>
         </form>
         <p>
             <Link to={'/sign-in'} className={styles.moveSignInText}>로그인하러 가기</Link>
