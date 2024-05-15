@@ -7,6 +7,7 @@ import SubmitInput from '../SubmitInput';
 import {useEffect, useState} from 'react';
 import validatePassword from '../../utils/validatePassword.mjs';
 import validateConfirmPassword from '../../utils/validateConfirmPassword.mjs';
+import ToastMessage from '../ToastMessage';
 
 const UpdateUserPasswordForm = () => {
     // 이럴 때 커스텀 훅 쓰는건가? 너무 중복되는데??
@@ -21,12 +22,22 @@ const UpdateUserPasswordForm = () => {
 
     const [submitInputDisabled, setSubmitInputDisabled] = useState(true);
 
+    const [toast, setToast] = useState(false);
+
     const handleChangePassword = (event) => {
         setPassword(event.target.value);
     };
 
     const handleChangeConfirmPassword = (event) => {
         setConfirmPassword(event.target.value);
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        // 나중에 fetch API 추가
+
+        setToast(true);
     };
 
     useEffect(function updatePasswordHelperTextWhenInputPassword() {
@@ -49,7 +60,7 @@ const UpdateUserPasswordForm = () => {
 
     return (<MainContainer>
         <BodyTitle text={'비밀번호 수정'}></BodyTitle>
-        <form className={styles.updateUserPasswordForm}>
+        <form className={styles.updateUserPasswordForm} onSubmit={handleSubmit}>
             <LabeledInput labelText={'비밀번호'} type={'password'} name={'password'} placeholder={'비밀번호를 입력하세요'}
                           onChange={handleChangePassword}/>
             <HelperText text={passwordHelperText}/>
@@ -58,6 +69,8 @@ const UpdateUserPasswordForm = () => {
             <HelperText text={confirmPasswordHelperText}/>
             <SubmitInput disabled={submitInputDisabled} value={'수정하기'}/>
         </form>
+
+        {toast && <ToastMessage setToast={setToast} text={'수정완료'}/>}
     </MainContainer>);
 };
 
