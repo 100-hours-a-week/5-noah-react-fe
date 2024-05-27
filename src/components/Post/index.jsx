@@ -6,6 +6,7 @@ import {useState} from 'react';
 import Modal from '../Modal';
 
 const Post = ({
+                  id,
                   postTitle,
                   authorImageSrc,
                   authorName,

@@ -49,6 +49,20 @@ const SignInForm = () => {
         event.preventDefault();
 
         console.log('email: ', email, 'password:', password);
+
+        fetch('http://localhost:8000/api/sign-in', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            }),
+            credentials: 'include',
+        }).then((response) => {
+            console.log(response);
+        });
     };
 
     return (<MainContainer>

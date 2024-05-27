@@ -1,8 +1,10 @@
 import styles from './styles.module.css';
 import UserImage from '../UserImage';
 import updateNumberByUnit from '../../utils/updateNumberByUnit.mjs';
+import {useNavigate} from 'react-router-dom';
 
 const SimplePost = ({
+                        id,
                         title,
                         likes,
                         comments,
@@ -11,8 +13,13 @@ const SimplePost = ({
                         authorImageSrc,
                         authorName,
                     }) => {
+    const navigate = useNavigate();
 
-    return (<div className={styles.simplePostContainer}>
+    const handleClickSimplePost = () => {
+        navigate(`/posts/${id}`);
+    };
+
+    return (<div className={styles.simplePostContainer} onClick={handleClickSimplePost}>
         <p className={styles.simplePostTitle}>{title}</p>
         <div className={styles.simplePostInformationContainer}>
             <div>

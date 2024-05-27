@@ -11,10 +11,9 @@ const LabeledTextarea = ({
                              minLength,
                              maxLength,
                          }) => {
-
     return (<>
         <Label htmlFor={name} labelText={labelText}/>
-        <textarea className={styles.textarea} style={{height: textareaHeight}} id={name} value={value}
+        <textarea className={styles.textarea} style={{height: textareaHeight}} id={name} name={name} value={value}
                   onChange={onChange} placeholder={placeholder} minLength={minLength} maxLength={maxLength}></textarea>
     </>);
 };
