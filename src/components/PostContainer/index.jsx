@@ -12,10 +12,11 @@ const PostContainer = ({data}) => {
             {post && <Post id={post.id} postTitle={post.title}
                            authorImageSrc={`http://localhost:8000/${post.author.imageUrl}`}
                            authorName={post.author.name}
-                           createdDate={post.createdDate} postImageSrc={`http://localhost:8000/${post.imageUrl}`}
+                           createdDate={post.createdDate}
+                           postImageSrc={post.imageUrl ? `http://localhost:8000/${post.imageUrl}` : ''}
                            postContent={post.content}
-                           views={post.views} comments={post.comments.count}></Post>}
-            <CommentContainer/>
+                           views={post.views} comments={post.comments}></Post>}
+            {post && <CommentContainer postId={post.id}/>}
         </div>
     </MainContainer>);
 };

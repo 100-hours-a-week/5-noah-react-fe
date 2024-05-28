@@ -44,6 +44,7 @@ const validateContent = (content) => {
 };
 
 const EditPostForm = ({
+                          postId,
                           bodyTitleText,
                           onSubmit,
                       }) => {
@@ -59,6 +60,23 @@ const EditPostForm = ({
     const handleChangeContent = (event) => {
         setContent(event.target.value);
     };
+
+    // 야매 코드
+    useEffect(function getPostInfo() {
+        if (postId) {
+            fetch(`http://localhost:8000/api/posts/${postId}`)
+                .then((response) => {
+                    if (response.ok) {
+                        response.json().then((body) => {
+                            setTitle(body.title);
+                            setContent(body.content);
+                        });
+                    } else {
+                        alert('ERROR');
+                    }
+                });
+        }
+    }, [postId]);
 
     useEffect(function updateHelperTextWhenInput() {
         const titleResult = validateTitle(title);
@@ -78,9 +96,9 @@ const EditPostForm = ({
         <BodyTitle text={bodyTitleText}></BodyTitle>
         <form className={styles.editPostForm} encType={'multipart/form-data'} onSubmit={onSubmit}>
             <LabeledInput labelText={'제목 *'} type={'text'} name={'title'} placeholder={'제목을 입력해주세요 (최대 26글자)'}
-                          maxLength={26} onChange={handleChangeTitle}/>
+                          maxLength={26} onChange={handleChangeTitle} value={title}/>
             <LabeledTextarea labelText={'내용 *'} textareaHeight={'300px'} name={'content'} placeholder={'내용을 입력해주세요'}
-                             onChange={handleChangeContent}/>
+                             onChange={handleChangeContent} value={content}/>
             <HelperText text={helperText}/>
             <Label labelText={'이미지'}/>
             <div className={styles.editPostFormInputImageContainer}>

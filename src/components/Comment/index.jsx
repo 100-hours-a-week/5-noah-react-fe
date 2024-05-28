@@ -3,14 +3,24 @@ import UserImage from '../UserImage';
 import SmallButton from '../SmallButton';
 import {useState} from 'react';
 import Modal from '../Modal';
+import {useNavigate} from 'react-router-dom';
 
 const Comment = ({
+                     postId,
+                     commentId,
                      authorImageSrc,
                      authorName,
                      createdDate,
                      content,
+                     userNickname, // 버튼 display 용도로 사용, 아 먼가 엉성한데
                  }) => {
+    const navigate = useNavigate();
+
     const [modal, setModal] = useState(false);
+
+    const handleClickUpdateCommentButton = () => {
+        alert('댓글 수정 기능은 없습니다.');
+    };
 
     const handleOpenModal = () => {
         setModal(true);
@@ -21,10 +31,16 @@ const Comment = ({
     };
 
     const handleDeleteComment = () => {
-        console.log('댓글 삭제');
-
-        // 나중에 fetch API 추가
-        setModal(false);
+        fetch(`http://localhost:8000/api/posts/${postId}/comments/${commentId}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        }).then((response) => {
+            if (response.ok) {
+                navigate(`/posts/${postId}`);
+            } else {
+                alert('ERROR');
+            }
+        });
     };
 
     return (<div className={styles.container}>
@@ -34,10 +50,10 @@ const Comment = ({
                 <span className={styles.authorName}>{authorName}</span>
                 <span>{createdDate}</span>
             </div>
-            <div>
-                <SmallButton value={'수정'}/>
+            {authorName === userNickname && <div>
+                <SmallButton onClick={handleClickUpdateCommentButton} value={'수정'}/>
                 <SmallButton onClick={handleOpenModal} value={'삭제'}/>
-            </div>
+            </div>}
         </div>
         <p className={styles.content}>{content}</p>
 

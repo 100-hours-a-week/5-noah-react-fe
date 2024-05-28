@@ -3,19 +3,33 @@ import {useState} from 'react';
 import BackButton from '../BackButton';
 import HeaderTitle from '../HeaderTitle';
 import UserImage from '../UserImage';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 const Header = ({
                     useBackButton,
                     useUserImage,
                     imageSrc,
                 }) => {
+    const navigate = useNavigate();
+
     const [dropDownState, setDropDownState] = useState(false);
 
     const handleToggleDropDownState = () => {
         setDropDownState(!dropDownState);
     };
 
+    const handleClickSignOut = () => {
+        fetch('http://localhost:8000/api/sign-out', {
+            method: 'DELETE',
+            credentials: 'include',
+        }).then((response) => {
+            if (response.ok) {
+                navigate('/sign-in');
+            } else {
+                navigate('posts');
+            }
+        });
+    };
 
     return (<div className={styles.header}>
         <div className={styles.headerContainer}>
@@ -29,8 +43,7 @@ const Header = ({
                     <ul>
                         <li><Link to={'/users/update/profile'} className={styles.LinkText}>회원정보수정</Link></li>
                         <li><Link to={'/users/update/password'} className={styles.LinkText}>비밀번호수정</Link></li>
-                        {/* 나중에 로그아웃 로직 구현 */}
-                        <li><Link to={'/sign-in'} className={styles.LinkText}>로그아웃</Link></li>
+                        <li><p className={styles.LinkText} onClick={handleClickSignOut}>로그아웃</p></li>
                     </ul>
                 </div>}
             </div>
