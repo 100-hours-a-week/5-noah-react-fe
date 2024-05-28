@@ -43,11 +43,11 @@ const validateContent = (content) => {
     }
 };
 
-const EditPostForm = ({bodyTitleText}) => {
-    // 자문자답
-    // Q. 조건에 따라 hooks이나 이벤트를 바꿀 수 있는가?, 게시글 작성과 게시글 수정 폼은 같으나, 선행 API랑 submit 버튼 API가 다를텐데
-    // A. 상위 컴포넌트에서 전달한다.
-
+const EditPostForm = ({
+                          postId,
+                          bodyTitleText,
+                          onSubmit,
+                      }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [helperText, setHelperText] = useState('');
@@ -60,6 +60,23 @@ const EditPostForm = ({bodyTitleText}) => {
     const handleChangeContent = (event) => {
         setContent(event.target.value);
     };
+
+    // 야매 코드
+    useEffect(function getPostInfo() {
+        if (postId) {
+            fetch(`http://localhost:8000/api/posts/${postId}`)
+                .then((response) => {
+                    if (response.ok) {
+                        response.json().then((body) => {
+                            setTitle(body.title);
+                            setContent(body.content);
+                        });
+                    } else {
+                        alert('ERROR');
+                    }
+                });
+        }
+    }, [postId]);
 
     useEffect(function updateHelperTextWhenInput() {
         const titleResult = validateTitle(title);
@@ -77,15 +94,15 @@ const EditPostForm = ({bodyTitleText}) => {
 
     return (<MainContainer>
         <BodyTitle text={bodyTitleText}></BodyTitle>
-        <form className={styles.editPostForm}>
+        <form className={styles.editPostForm} encType={'multipart/form-data'} onSubmit={onSubmit}>
             <LabeledInput labelText={'제목 *'} type={'text'} name={'title'} placeholder={'제목을 입력해주세요 (최대 26글자)'}
-                          maxLength={26} onChange={handleChangeTitle}/>
+                          maxLength={26} onChange={handleChangeTitle} value={title}/>
             <LabeledTextarea labelText={'내용 *'} textareaHeight={'300px'} name={'content'} placeholder={'내용을 입력해주세요'}
-                             onChange={handleChangeContent}/>
+                             onChange={handleChangeContent} value={content}/>
             <HelperText text={helperText}/>
             <Label labelText={'이미지'}/>
             <div className={styles.editPostFormInputImageContainer}>
-                <input type={'file'}/>
+                <input type={'file'} name={'image'}/>
             </div>
             <SubmitInput disabled={submitInputDisabled} value={'완료'}></SubmitInput>
         </form>

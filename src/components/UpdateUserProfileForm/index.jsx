@@ -13,8 +13,11 @@ import ToastMessage from '../ToastMessage';
 import Modal from '../Modal';
 
 const UpdateUserProfileForm = () => {
+    const [userImageSrc, setUserImageSrc] = useState('');
     const [userImageFile, setUserImageFile] = useState(null);
     const [userImageFileStatus, setUserImageFileStatus] = useState(false);
+
+    const [email, setEmail] = useState('');
 
     const [nickname, setNickname] = useState('');
     const [nicknameStatus, setNicknameStatus] = useState(false);
@@ -38,9 +41,27 @@ const UpdateUserProfileForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // 나중에 fetch API 추가
+        const formData = new FormData();
+        formData.append('image', event.target.image.files[0]);
+        formData.append('nickname', event.target.nickname.value);
 
-        setToast(true);
+        // INFO: form을 통해 image를 변경해도 헤더의 이미지는 변경 없음
+        fetch('http://localhost:8000/api/users/update/image-and-nickname', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include',
+        }).then((response) => {
+            if (response.ok) {
+                setToast(true);
+            } else {
+                if (response.status === 409) {
+                    setHelperText('* 중복된 닉네임입니다.');
+                    setNicknameStatus(false);
+                } else {
+                    alert('ERROR');
+                }
+            }
+        });
     };
 
     const handleOpenModal = () => {
@@ -57,6 +78,20 @@ const UpdateUserProfileForm = () => {
         // 나중에 fetch API 추가
         setModal(false);
     };
+
+    useEffect(function searchUserProfile() {
+        fetch('http://localhost:8000/api/users/update/image-and-nickname', {
+            credentials: 'include',
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then((body) => {
+                    setUserImageSrc(`http://localhost:8000/${body.imageUrl}`);
+                    setEmail(body.email);
+                    setNickname(body.nickname);
+                });
+            }
+        });
+    }, []);
 
     useEffect(function updateHelperTextWhenInput() {
         const userImageFileResult = validateUserImageFile(userImageFile);
@@ -83,10 +118,11 @@ const UpdateUserProfileForm = () => {
         <BodyTitle text={'회원정보수정'}></BodyTitle>
         <form className={styles.updateUserProfileForm} onSubmit={handleSubmit}>
             <Label labelText={'프로필 사진 *'}/>
-            <LabeledInputUserImage name={'userImage'} onChange={handleChangeUserImageFile}/>
+            <LabeledInputUserImage name={'image'} defaultUserImageSrc={userImageSrc}
+                                   onChange={handleChangeUserImageFile}/>
             <Label labelText={'이메일'}/>
-            <p className={styles.userEmail}>49ehyeon42@gmail.com</p>
-            <LabeledInput labelText={'닉네임'} type={'text'} name={'nickname'} placeholder={'닉네임을 입력하세요'}
+            <p className={styles.userEmail}>{email}</p>
+            <LabeledInput labelText={'닉네임'} type={'text'} name={'nickname'} placeholder={'닉네임을 입력하세요'} value={nickname}
                           onChange={handleChangeNickname}/>
             <HelperText text={helperText}/>
             <SubmitInput disabled={submitInputDisabled} value={'수정하기'}/>

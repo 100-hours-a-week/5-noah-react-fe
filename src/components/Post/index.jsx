@@ -2,10 +2,12 @@ import styles from './styles.module.css';
 import UserImage from '../UserImage';
 import SmallButton from '../SmallButton';
 import updateNumberByUnit from '../../utils/updateNumberByUnit.mjs';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Modal from '../Modal';
+import {useNavigate} from 'react-router-dom';
 
 const Post = ({
+                  id,
                   postTitle,
                   authorImageSrc,
                   authorName,
@@ -15,7 +17,15 @@ const Post = ({
                   views,
                   comments,
               }) => {
+    const navigate = useNavigate();
+
+    const [buttonDisplay, setButtonDisplay] = useState('none');
+
     const [modal, setModal] = useState(false);
+
+    const handleClickUpdatePostButton = () => {
+        navigate(`/posts/${id}/update`);
+    };
 
     const handleOpenModal = () => {
         setModal(true);
@@ -26,11 +36,35 @@ const Post = ({
     };
 
     const handleDeletePost = () => {
-        console.log('게시글 삭제');
+        fetch(`http://localhost:8000/api/posts/${id}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        }).then((response) => {
+            if (!response.ok) {
+                alert('ERROR');
+            }
 
-        // 나중에 fetch API 추가
-        setModal(false);
+            navigate('/posts');
+        });
     };
+
+    // 본인이 작성한 게시글이면 버튼 보임
+    useEffect(function updateButtonDisplay() {
+        fetch('http://localhost:8000/api/check-auth', {
+            credentials: 'include',
+        })
+            .then((response) => {
+                if (response.ok) {
+                    response.json().then((body) => {
+                        if (body.nickname === authorName) {
+                            setButtonDisplay('inline');
+                        } else {
+                            setButtonDisplay('none');
+                        }
+                    });
+                }
+            });
+    });
 
     return (<div>
         <div>
@@ -42,14 +76,14 @@ const Post = ({
                     <span>{createdDate}</span>
                 </div>
                 <div>
-                    <SmallButton value={'수정'}/>
-                    <SmallButton onClick={handleOpenModal} value={'삭제'}/>
+                    <SmallButton onClick={handleClickUpdatePostButton} value={'수정'} display={buttonDisplay}/>
+                    <SmallButton onClick={handleOpenModal} value={'삭제'} display={buttonDisplay}/>
                 </div>
             </div>
         </div>
         <hr className={styles.horizontalRule}></hr>
         <div className={styles.contentContainer}>
-            <img src={postImageSrc} alt={'게시글 사진'} width={544} height={306}/>
+            {postImageSrc && <img src={postImageSrc} alt={'게시글 사진'} width={544} height={306}/>}
             <p className={styles.postContent}>{postContent}</p>
             <div className={styles.contentSubContainer}>
                 <div className={styles.contentSubInfoContainer}>

@@ -11,16 +11,14 @@ import UpdateUserPasswordPage from './pages/UpdateUserPassword';
 
 function App() {
     return (<div className={styles.App}>
-        {/* TODO: 작은 버튼, 중간 버튼 겹치는 부분 보임, 리팩토링 필요 */}
-
         <Routes>
-            {/*<Route path={'/'} element={<SignInPage/>}/>*/}
+            <Route path={'/'} element={<SignInPage/>}/>
             <Route path={'/sign-in'} element={<SignInPage/>}/>
             <Route path={'/sign-up'} element={<SignUpPage/>}/>
             <Route path={'/posts'} element={<PostsPage/>}/>
             <Route path={'/posts/:id'} element={<PostPage/>}/>
             <Route path={'/posts/create'} element={<CreatePostPage/>}/>
-            <Route path={'/posts/update'} element={<UpdatePostPage/>}/>
+            <Route path={'/posts/:postId/update'} element={<UpdatePostPage/>}/>
             <Route path={'/users/update/profile'} element={<UpdateUserProfilePage/>}/>
             <Route path={'/users/update/password'} element={<UpdateUserPasswordPage/>}/>
         </Routes>

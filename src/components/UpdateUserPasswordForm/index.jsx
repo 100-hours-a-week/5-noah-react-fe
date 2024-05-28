@@ -35,9 +35,22 @@ const UpdateUserPasswordForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // 나중에 fetch API 추가
-
-        setToast(true);
+        fetch('http://localhost:8000/api/users/update/password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                password: password,
+            }),
+            credentials: 'include',
+        }).then((response) => {
+            if (response.ok) {
+                setToast(true);
+            } else {
+                alert('ERROR');
+            }
+        });
     };
 
     useEffect(function updatePasswordHelperTextWhenInputPassword() {

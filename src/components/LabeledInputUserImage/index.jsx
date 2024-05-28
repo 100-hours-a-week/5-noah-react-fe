@@ -1,17 +1,20 @@
 import styles from './styles.module.css';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 const DEFAULT_USER_IMAGE_PATH = '/etc-images/sign-up-default-background-image.png';
 
 const LabeledInputUserImage = ({
                                    name,
+                                   defaultUserImageSrc,
                                    onChange,
                                }) => {
-    const [imageSrc, setImageSrc] = useState(DEFAULT_USER_IMAGE_PATH);
+    const initialImageSrc = defaultUserImageSrc || DEFAULT_USER_IMAGE_PATH;
+
+    const [imageSrc, setImageSrc] = useState(initialImageSrc);
 
     const handleChangeUserImage = (event) => {
         if (!event.target.files) {
-            setImageSrc(DEFAULT_USER_IMAGE_PATH);
+            setImageSrc(initialImageSrc);
             onChange(null);
             return;
         }
@@ -19,7 +22,7 @@ const LabeledInputUserImage = ({
         const userImage = event.target.files[0];
 
         if (!userImage) {
-            setImageSrc(DEFAULT_USER_IMAGE_PATH);
+            setImageSrc(initialImageSrc);
             onChange(null);
             return;
         }
@@ -36,6 +39,10 @@ const LabeledInputUserImage = ({
         fileReader.readAsDataURL(userImage);
         onChange(null);
     };
+
+    useEffect(function updateUserImage() {
+        setImageSrc(initialImageSrc);
+    }, [initialImageSrc]);
 
     return (<>
         <label htmlFor={name} className={styles.imageContainer}>

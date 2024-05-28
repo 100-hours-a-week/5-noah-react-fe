@@ -1,5 +1,5 @@
 import styles from './styles.module.css';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
@@ -10,6 +10,8 @@ import HelperText from '../HelperText';
 import SubmitInput from '../SubmitInput';
 
 const SignInForm = () => {
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [helperText, setHelperText] = useState('');
@@ -44,11 +46,38 @@ const SignInForm = () => {
         setSubmitInputDisable(false);
     }, [email, password]);
 
-    // 나중에 fetch 추가, 로그인 실패 시 help text를 통해 사용자에게 결과 알림
+    // 이미 로그인되어 있다면 /posts로 이동, 나중에 HOC로 빼기
+    useEffect(function checkAlreadySignIn() {
+        fetch('http://localhost:8000/api/check-auth', {
+            credentials: 'include',
+        })
+            .then((response) => {
+                if (response.ok) {
+                    navigate('/posts');
+                }
+            });
+    }, [navigate]);
+
     const handleSignIn = (event) => {
         event.preventDefault();
 
-        console.log('email: ', email, 'password:', password);
+        fetch('http://localhost:8000/api/sign-in', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            }),
+            credentials: 'include',
+        }).then((response) => {
+            if (!response.ok) {
+                setHelperText('* 이메일 또는 비밀번호를 다시 확인해 주세요.');
+            } else {
+                navigate('/posts');
+            }
+        });
     };
 
     return (<MainContainer>
