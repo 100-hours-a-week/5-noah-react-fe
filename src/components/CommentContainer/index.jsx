@@ -3,6 +3,7 @@ import MediumButton from '../MediumButton';
 import Comment from '../Comment';
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import useInput from '../../hooks/useInput';
 
 const CommentContainer = ({postId}) => {
     const navigate = useNavigate();
@@ -13,11 +14,12 @@ const CommentContainer = ({postId}) => {
 
     const [comments, setComments] = useState([]);
 
-    const [commentContent, setCommentContent] = useState('');
+    const {
+        value: commentContent,
+        onChangeWithEvent: onChangeCommentContentWithEvent,
+    } = useInput('');
 
-    const handleChangeCommentContent = (event) => {
-        setCommentContent(event.target.value);
-    };
+    const [submitInputDisable, setSubmitInputDisable] = useState(true);
 
     const handleClickCommentRegisterButton = (event) => {
         event.preventDefault();
@@ -40,7 +42,7 @@ const CommentContainer = ({postId}) => {
         });
     };
 
-    // 로그인하지 않으면 댓글 폼을 볼 수 없음
+    // 로그인하지 않으면 댓글 폼을 볼 수 없음, HOC 대상
     useEffect(function updateButtonDisplay() {
         fetch('http://localhost:8000/api/check-auth', {
             credentials: 'include',
@@ -67,12 +69,17 @@ const CommentContainer = ({postId}) => {
             });
     }, [postId]);
 
+    // 입력이 있다면 댓글 등록 버튼 활성화
+    useEffect(() => {
+        setSubmitInputDisable(!commentContent);
+    }, [commentContent]);
+
     return (<div className={styles.commentContainer}>
-        {commentFormDisplay && <form className={styles.createCommentForm} onChange={handleChangeCommentContent}>
-            <textarea className={styles.textarea} placeholder={'댓글을 남겨주세요!'}/>
+        {commentFormDisplay && <form className={styles.createCommentForm} onChange={onChangeCommentContentWithEvent}>
+            <textarea className={styles.textarea} placeholder={'댓글을 남겨주세요!'} maxLength={256}/>
             <hr className={styles.horizontalRule}></hr>
             <div className={styles.createCommentFormSubmitButtonContainer}>
-                <MediumButton value={'댓글 등록'} onClick={handleClickCommentRegisterButton}/>
+                <MediumButton disable={submitInputDisable} value={'댓글 등록'} onClick={handleClickCommentRegisterButton}/>
             </div>
         </form>}
         <div className={styles.comments}>
