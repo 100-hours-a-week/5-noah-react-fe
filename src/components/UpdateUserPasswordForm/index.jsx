@@ -8,29 +8,26 @@ import {useEffect, useState} from 'react';
 import validatePassword from '../../utils/validatePassword.mjs';
 import validateConfirmPassword from '../../utils/validateConfirmPassword.mjs';
 import ToastMessage from '../ToastMessage';
+import useInput from '../../hooks/useInput';
+import useValidation from '../../hooks/useValidation';
+import useAllValid from '../../hooks/useAllValid';
 
 const UpdateUserPasswordForm = () => {
-    // 이럴 때 커스텀 훅 쓰는건가? 너무 중복되는데??
+    const {
+        value: password,
+        onChangeWithEvent: onChangePassword,
+    } = useInput('');
 
-    const [password, setPassword] = useState('');
-    const [passwordHelperText, setPasswordHelperText] = useState('');
-    const [passwordStatus, setPasswordStatus] = useState(false);
-
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const {
+        value: confirmPassword,
+        onChangeWithEvent: onChangeConfirmPassword,
+    } = useInput('');
     const [confirmPasswordHelperText, setConfirmPasswordHelperText] = useState('');
-    const [confirmPasswordStatus, setConfirmPasswordStatus] = useState(false);
-
-    const [submitInputDisabled, setSubmitInputDisabled] = useState(true);
+    const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(false);
 
     const [toast, setToast] = useState(false);
 
-    const handleChangePassword = (event) => {
-        setPassword(event.target.value);
-    };
-
-    const handleChangeConfirmPassword = (event) => {
-        setConfirmPassword(event.target.value);
-    };
+    const passwordValidation = useValidation(password, validatePassword);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -53,34 +50,25 @@ const UpdateUserPasswordForm = () => {
         });
     };
 
-    useEffect(function updatePasswordHelperTextWhenInputPassword() {
-        const result = validatePassword(password);
-
-        setPasswordHelperText(result.message);
-        setPasswordStatus(result.status);
-    }, [password]);
-
     useEffect(function updateConfirmPasswordHelperTextWhenInputConfirmPassword() {
         const result = validateConfirmPassword(password, confirmPassword);
 
         setConfirmPasswordHelperText(result.message);
-        setConfirmPasswordStatus(result.status);
+        setIsValidConfirmPassword(result.status);
     }, [password, confirmPassword]);
 
-    useEffect(function updateSubmitInputWhenOtherInput() {
-        setSubmitInputDisabled(!(passwordStatus && confirmPasswordStatus));
-    }, [passwordStatus, confirmPasswordStatus]);
+    const isAllValid = useAllValid(passwordValidation.isValid, passwordValidation.isValid, isValidConfirmPassword);
 
     return (<MainContainer>
         <BodyTitle text={'비밀번호 수정'}></BodyTitle>
         <form className={styles.updateUserPasswordForm} onSubmit={handleSubmit}>
             <LabeledInput labelText={'비밀번호'} type={'password'} name={'password'} placeholder={'비밀번호를 입력하세요'}
-                          onChange={handleChangePassword}/>
-            <HelperText text={passwordHelperText}/>
+                          onChange={onChangePassword}/>
+            <HelperText text={passwordValidation.helperText}/>
             <LabeledInput labelText={'비밀번호 확인'} type={'password'} name={'confirmPassword'}
-                          placeholder={'비밀번호를 한번 더 입력하세요'} onChange={handleChangeConfirmPassword}/>
+                          placeholder={'비밀번호를 한번 더 입력하세요'} onChange={onChangeConfirmPassword}/>
             <HelperText text={confirmPasswordHelperText}/>
-            <SubmitInput disabled={submitInputDisabled} value={'수정하기'}/>
+            <SubmitInput disabled={!isAllValid} value={'수정하기'}/>
         </form>
 
         {toast && <ToastMessage setToast={setToast} text={'수정완료'}/>}

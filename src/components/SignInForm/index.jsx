@@ -1,6 +1,6 @@
 import styles from './styles.module.css';
 import {Link, useNavigate} from 'react-router-dom';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
 import MainContainer from '../MainContainer';
@@ -8,43 +8,26 @@ import BodyTitle from '../BodyTitle';
 import LabeledInput from '../LabeledInput';
 import HelperText from '../HelperText';
 import SubmitInput from '../SubmitInput';
+import useInput from '../../hooks/useInput';
+import useValidation from '../../hooks/useValidation';
+import useAllValid from '../../hooks/useAllValid';
 
 const SignInForm = () => {
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [helperText, setHelperText] = useState('');
-    const [submitInputDisable, setSubmitInputDisable] = useState(true);
+    const {
+        value: email,
+        onChangeWithEvent: onChangeEmail,
+    } = useInput('');
+    const {
+        value: password,
+        onChangeWithEvent: onChangePassword,
+    } = useInput('');
 
-    const handleChangeEmail = (event) => {
-        setEmail(event.target.value);
-    };
+    const emailValidation = useValidation(email, validateEmail);
+    const passwordValidation = useValidation(password, validatePassword);
 
-    const handleChangePassword = (event) => {
-        setPassword(event.target.value);
-    };
-
-    useEffect(function updateSubmitInputWhenInput() {
-        const validateEmailResult = validateEmail(email);
-
-        if (!validateEmailResult.status) {
-            setHelperText(validateEmailResult.message);
-            setSubmitInputDisable(true);
-            return;
-        }
-
-        const validatePasswordResult = validatePassword(password);
-
-        if (!validatePasswordResult.status) {
-            setHelperText(validatePasswordResult.message);
-            setSubmitInputDisable(true);
-            return;
-        }
-
-        setHelperText('');
-        setSubmitInputDisable(false);
-    }, [email, password]);
+    const isAllValid = useAllValid(emailValidation.isValid, passwordValidation.isValid);
 
     // 이미 로그인되어 있다면 /posts로 이동, 나중에 HOC로 빼기
     useEffect(function checkAlreadySignIn() {
@@ -73,7 +56,8 @@ const SignInForm = () => {
             credentials: 'include',
         }).then((response) => {
             if (!response.ok) {
-                setHelperText('* 이메일 또는 비밀번호를 다시 확인해 주세요.');
+                emailValidation.handleChangeHelperText('* 이메일 또는 비밀번호를 다시 확인해 주세요.');
+                emailValidation.handleInvalidate();
             } else {
                 navigate('/posts');
             }
@@ -83,12 +67,12 @@ const SignInForm = () => {
     return (<MainContainer>
         <BodyTitle text={'로그인'}></BodyTitle>
         <form className={styles.signInForm} onSubmit={handleSignIn}>
-            <LabeledInput labelText={'이메일'} name={'email'} type={'email'} onChange={handleChangeEmail}
+            <LabeledInput labelText={'이메일'} name={'email'} type={'email'} onChange={onChangeEmail}
                           placeholder={'이메일을 입력하세요'}/>
-            <LabeledInput labelText={'비밀번호'} name={'password'} type={'password'} onChange={handleChangePassword}
+            <LabeledInput labelText={'비밀번호'} name={'password'} type={'password'} onChange={onChangePassword}
                           placeholder={'비밀번호를 입력하세요'}/>
-            <HelperText text={helperText}/>
-            <SubmitInput disabled={submitInputDisable} value={'로그인'}/>
+            <HelperText text={emailValidation.helperText || passwordValidation.helperText}/>
+            <SubmitInput disabled={!isAllValid} value={'로그인'}/>
         </form>
         <p>
             <Link to={'/sign-up'} className={styles.moveSignUpText}>회원가입</Link>

@@ -11,39 +11,38 @@ import validateNickname from '../../utils/validateNickname.mjs';
 import validateUserImageFile from '../../utils/validateUserImageFile.mjs';
 import ToastMessage from '../ToastMessage';
 import Modal from '../Modal';
+import useInput from '../../hooks/useInput';
+import useValidation from '../../hooks/useValidation';
+import useAllValid from '../../hooks/useAllValid';
 
 const UpdateUserProfileForm = () => {
-    const [userImageSrc, setUserImageSrc] = useState('');
-    const [userImageFile, setUserImageFile] = useState(null);
-    const [userImageFileStatus, setUserImageFileStatus] = useState(false);
+    const [imageSrc, setImageSrc] = useState('');
+    const {
+        value: image,
+        onChangeWithValue: onChangeImage,
+    } = useInput(null);
 
     const [email, setEmail] = useState('');
 
-    const [nickname, setNickname] = useState('');
-    const [nicknameStatus, setNicknameStatus] = useState(false);
-
-    const [helperText, setHelperText] = useState('');
-
-    const [submitInputDisabled, setSubmitInputDisabled] = useState(true);
+    const {
+        value: nickname,
+        onChangeWithEvent: onChangeNicknameWithEvent,
+        onChangeWithValue: onChangeNicknameWithValue,
+    } = useInput('');
 
     const [toast, setToast] = useState(false);
 
     const [modal, setModal] = useState(false);
 
-    const handleChangeUserImageFile = (file) => {
-        setUserImageFile(file);
-    };
-
-    const handleChangeNickname = (event) => {
-        setNickname(event.target.value);
-    };
+    const imageValidation = useValidation(image, validateUserImageFile);
+    const nicknameValidation = useValidation(nickname, validateNickname);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         const formData = new FormData();
-        formData.append('image', event.target.image.files[0]);
-        formData.append('nickname', event.target.nickname.value);
+        formData.append('image', image);
+        formData.append('nickname', nickname);
 
         // INFO: form을 통해 image를 변경해도 헤더의 이미지는 변경 없음
         fetch('http://localhost:8000/api/users/update/image-and-nickname', {
@@ -55,8 +54,8 @@ const UpdateUserProfileForm = () => {
                 setToast(true);
             } else {
                 if (response.status === 409) {
-                    setHelperText('* 중복된 닉네임입니다.');
-                    setNicknameStatus(false);
+                    nicknameValidation.handleChangeHelperText('* 중복된 닉네임입니다.');
+                    nicknameValidation.handleInvalidate();
                 } else {
                     alert('ERROR');
                 }
@@ -85,47 +84,28 @@ const UpdateUserProfileForm = () => {
         }).then((response) => {
             if (response.ok) {
                 response.json().then((body) => {
-                    setUserImageSrc(`http://localhost:8000/${body.imageUrl}`);
+                    setImageSrc(`http://localhost:8000/${body.imageUrl}`);
                     setEmail(body.email);
-                    setNickname(body.nickname);
+                    onChangeNicknameWithValue(body.nickname);
                 });
             }
         });
     }, []);
 
-    useEffect(function updateHelperTextWhenInput() {
-        const userImageFileResult = validateUserImageFile(userImageFile);
-
-        setHelperText(userImageFileResult.message);
-        setUserImageFileStatus(userImageFileResult.status);
-
-        if (userImageFileResult.status) {
-            const {
-                status,
-                message,
-            } = validateNickname(nickname);
-
-            setHelperText(message);
-            setNicknameStatus(status);
-        }
-    }, [userImageFile, nickname]);
-
-    useEffect(function updateSubmitInputWhenOtherInput() {
-        setSubmitInputDisabled(!(userImageFileStatus && nicknameStatus));
-    }, [userImageFileStatus, nicknameStatus]);
+    const isAllValid = useAllValid(imageValidation.isValid, nicknameValidation.isValid);
 
     return (<MainContainer>
         <BodyTitle text={'회원정보수정'}></BodyTitle>
         <form className={styles.updateUserProfileForm} onSubmit={handleSubmit}>
             <Label labelText={'프로필 사진 *'}/>
-            <LabeledInputUserImage name={'image'} defaultUserImageSrc={userImageSrc}
-                                   onChange={handleChangeUserImageFile}/>
+            <LabeledInputUserImage name={'image'} defaultUserImageSrc={imageSrc}
+                                   onChange={onChangeImage}/>
             <Label labelText={'이메일'}/>
             <p className={styles.userEmail}>{email}</p>
             <LabeledInput labelText={'닉네임'} type={'text'} name={'nickname'} placeholder={'닉네임을 입력하세요'} value={nickname}
-                          onChange={handleChangeNickname}/>
-            <HelperText text={helperText}/>
-            <SubmitInput disabled={submitInputDisabled} value={'수정하기'}/>
+                          onChange={onChangeNicknameWithEvent}/>
+            <HelperText text={imageValidation.helperText || nicknameValidation.helperText}/>
+            <SubmitInput disabled={!isAllValid} value={'수정하기'}/>
         </form>
         <p onClick={handleOpenModal}>회원탈퇴</p>
 
