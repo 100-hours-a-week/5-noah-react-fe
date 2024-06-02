@@ -1,6 +1,5 @@
 import styles from './styles.module.css';
 import {Link, useNavigate} from 'react-router-dom';
-import {useEffect} from 'react';
 import validateEmail from '../../utils/validateEmail.mjs';
 import validatePassword from '../../utils/validatePassword.mjs';
 import MainContainer from '../MainContainer';
@@ -28,18 +27,6 @@ const SignInForm = () => {
     const passwordValidation = useValidation(password, validatePassword);
 
     const isAllValid = useAllValid(emailValidation.isValid, passwordValidation.isValid);
-
-    // 이미 로그인되어 있다면 /posts로 이동, 나중에 HOC로 빼기
-    useEffect(function checkAlreadySignIn() {
-        fetch('http://localhost:8000/api/check-auth', {
-            credentials: 'include',
-        })
-            .then((response) => {
-                if (response.ok) {
-                    navigate('/posts');
-                }
-            });
-    }, [navigate]);
 
     const handleSignIn = (event) => {
         event.preventDefault();

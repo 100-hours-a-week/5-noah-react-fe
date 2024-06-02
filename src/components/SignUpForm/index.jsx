@@ -94,18 +94,6 @@ const SignUpForm = () => {
 
     const isAllValid = useAllValid(imageValidation.isValid, emailValidation.isValid, passwordValidation.isValid, isValidConfirmPassword, nicknameValidation.isValid);
 
-    // 이미 로그인되어 있다면 /posts로 이동, 나중에 HOC로 빼기
-    useEffect(function checkAlreadySignIn() {
-        fetch('http://localhost:8000/api/check-auth', {
-            credentials: 'include',
-        })
-            .then((response) => {
-                if (response.ok) {
-                    navigate('/posts');
-                }
-            });
-    }, [navigate]);
-
     return (<MainContainer>
         <BodyTitle text={'회원가입'}></BodyTitle>
         <form className={styles.signUpForm} onSubmit={handleSubmit}>

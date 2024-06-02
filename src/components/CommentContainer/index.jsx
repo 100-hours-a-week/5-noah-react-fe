@@ -2,16 +2,14 @@ import styles from './styles.module.css';
 import MediumButton from '../MediumButton';
 import Comment from '../Comment';
 import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
 import useInput from '../../hooks/useInput';
 
-const CommentContainer = ({postId}) => {
-    const navigate = useNavigate();
-
-    const [commentFormDisplay, setCommentFormDisplayDisplay] = useState(true);
-
-    const [nickname, setNickname] = useState('');
-
+const CommentContainer = ({
+                              isSigned,
+                              signedNickname,
+                              postId,
+                          }) => {
+    // HOC 중 useNavigate 새로고침이 안되서 `window.location.reload();`로 변경, 이유 못 찾음..
     const [comments, setComments] = useState([]);
 
     const {
@@ -35,30 +33,14 @@ const CommentContainer = ({postId}) => {
             credentials: 'include',
         }).then((response) => {
             if (response.ok) {
-                navigate(`/posts/${postId}`);
+                window.location.reload();
             } else {
                 alert('ERROR');
             }
         });
     };
 
-    // 로그인하지 않으면 댓글 폼을 볼 수 없음, HOC 대상
     useEffect(function updateButtonDisplay() {
-        fetch('http://localhost:8000/api/check-auth', {
-            credentials: 'include',
-        })
-            .then((response) => {
-                if (response.ok) {
-                    setCommentFormDisplayDisplay(true);
-
-                    response.json().then((body) => {
-                        setNickname(body.nickname);
-                    });
-                } else {
-                    setCommentFormDisplayDisplay(false);
-                }
-            });
-
         fetch(`http://localhost:8000/api/posts/${postId}/comments`)
             .then((response) => {
                 if (response.ok) {
@@ -75,7 +57,7 @@ const CommentContainer = ({postId}) => {
     }, [commentContent]);
 
     return (<div className={styles.commentContainer}>
-        {commentFormDisplay && <form className={styles.createCommentForm} onChange={onChangeCommentContentWithEvent}>
+        {isSigned && <form className={styles.createCommentForm} onChange={onChangeCommentContentWithEvent}>
             <textarea className={styles.textarea} placeholder={'댓글을 남겨주세요!'} maxLength={256}/>
             <hr className={styles.horizontalRule}></hr>
             <div className={styles.createCommentFormSubmitButtonContainer}>
@@ -91,7 +73,7 @@ const CommentContainer = ({postId}) => {
                 authorName={comment.author.name}
                 createdDate={comment.createdDate}
                 content={comment.content}
-                userNickname={nickname}
+                userNickname={signedNickname}
             />))}
         </div>
     </div>);

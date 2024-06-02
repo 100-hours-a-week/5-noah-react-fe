@@ -4,15 +4,17 @@ const useFetch = ({
                       url,
                       options,
                   }) => {
-    const [data, setData] = useState(null);
-    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [status, setStatus] = useState(null);
+    const [data, setData] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
                 const response = await fetch(url, options);
+                setStatus(response.status);
                 const json = await response.json();
                 setData(json);
                 setLoading(false);
@@ -24,12 +26,14 @@ const useFetch = ({
         };
 
         fetchData();
-    }, [url, options]);
+    }, [url]);
+    // options을 의존하면 무한 요청 발생
 
     return {
-        data,
-        error,
         loading,
+        error,
+        status,
+        data,
     };
 };
 

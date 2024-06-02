@@ -3,7 +3,11 @@ import MainContainer from '../MainContainer';
 import Post from '../Post';
 import CommentContainer from '../CommentContainer';
 
-const PostContainer = ({data}) => {
+const PostContainer = ({
+                           isSigned,
+                           signedNickname,
+                           data,
+                       }) => {
 
     const post = JSON.parse(data);
 
@@ -16,7 +20,7 @@ const PostContainer = ({data}) => {
                            postImageSrc={post.imageUrl ? `http://localhost:8000/${post.imageUrl}` : ''}
                            postContent={post.content}
                            views={post.views} comments={post.comments}></Post>}
-            {post && <CommentContainer postId={post.id}/>}
+            {post && <CommentContainer postId={post.id} isSigned={isSigned} signedNickname={signedNickname}/>}
         </div>
     </MainContainer>);
 };

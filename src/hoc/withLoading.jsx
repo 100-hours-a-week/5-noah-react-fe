@@ -1,4 +1,4 @@
-import useFetch from '../hooks/useFetch.jsx';
+import useFetch from '../hooks/useFetch.js';
 
 const withLoading = (WrappedComponent) => {
     return ({

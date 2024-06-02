@@ -6,7 +6,6 @@ import SubmitInput from '../SubmitInput';
 import LabeledTextarea from '../LabeledTextarea';
 import MainContainer from '../MainContainer';
 import Label from '../Label';
-import {useEffect} from 'react';
 import useInput from '../../hooks/useInput';
 import useValidation from '../../hooks/useValidation';
 import useAllValid from '../../hooks/useAllValid';
@@ -47,40 +46,41 @@ const validateContent = (content) => {
 };
 
 const EditPostForm = ({
-                          postId,
                           bodyTitleText,
+                          data,
                           onSubmit,
                       }) => {
+    // 야매야매 코드
+    let post;
+    if (data) {
+        post = JSON.parse(data);
+
+        if (!post) {
+            // 로딩 시
+            post = {
+                title: '',
+                content: '',
+            };
+        }
+    } else {
+        // 새로운 게시글 생성 시
+        post = {
+            title: '',
+            content: '',
+        };
+    }
+
     const {
         value: title,
-        onChangeWithEvent: onChangeTitleWithEvent,
-        onChangeWithValue: onChangeTitleWithValue,
-    } = useInput('');
+        onChangeWithEvent: onChangeTitle,
+    } = useInput(post.title);
     const {
         value: content,
-        onChangeWithEvent: onChangeContentWithEvent,
-        onChangeWithValue: onChangeContentWithValue,
-    } = useInput('');
+        onChangeWithEvent: onChangeContent,
+    } = useInput(post.content);
 
     const titleValidation = useValidation(title, validateTitle);
     const contentValidation = useValidation(content, validateContent);
-
-    // 야매 코드, HOC로 분리 가능할 듯
-    useEffect(function getPostInfo() {
-        if (postId) {
-            fetch(`http://localhost:8000/api/posts/${postId}`)
-                .then((response) => {
-                    if (response.ok) {
-                        response.json().then((body) => {
-                            onChangeTitleWithValue(body.title);
-                            onChangeContentWithValue(body.content);
-                        });
-                    } else {
-                        alert('ERROR');
-                    }
-                });
-        }
-    }, [postId]);
 
     const isAllValid = useAllValid(titleValidation.isValid, contentValidation.isValid);
 
@@ -88,9 +88,9 @@ const EditPostForm = ({
         <BodyTitle text={bodyTitleText}></BodyTitle>
         <form className={styles.editPostForm} encType={'multipart/form-data'} onSubmit={onSubmit}>
             <LabeledInput labelText={'제목 *'} type={'text'} name={'title'} placeholder={'제목을 입력해주세요 (최대 26글자)'}
-                          maxLength={26} onChange={onChangeTitleWithEvent} value={title}/>
+                          maxLength={26} onChange={onChangeTitle} value={title}/>
             <LabeledTextarea labelText={'내용 *'} textareaHeight={'300px'} name={'content'} placeholder={'내용을 입력해주세요'}
-                             onChange={onChangeContentWithEvent} value={content}/>
+                             onChange={onChangeContent} value={content}/>
             <HelperText text={titleValidation.helperText || contentValidation.helperText}/>
             <Label labelText={'이미지'}/>
             <div className={styles.editPostFormInputImageContainer}>

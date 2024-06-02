@@ -3,7 +3,6 @@ import UserImage from '../UserImage';
 import SmallButton from '../SmallButton';
 import {useState} from 'react';
 import Modal from '../Modal';
-import {useNavigate} from 'react-router-dom';
 
 const Comment = ({
                      postId,
@@ -14,7 +13,7 @@ const Comment = ({
                      content,
                      userNickname, // 버튼 display 용도로 사용, 아 먼가 엉성한데
                  }) => {
-    const navigate = useNavigate();
+    // HOC 중 useNavigate 새로고침이 안되서 `window.location.reload();`로 변경, 이유 못 찾음..
 
     const [modal, setModal] = useState(false);
 
@@ -36,7 +35,7 @@ const Comment = ({
             credentials: 'include',
         }).then((response) => {
             if (response.ok) {
-                navigate(`/posts/${postId}`);
+                window.location.reload();
             } else {
                 alert('ERROR');
             }
