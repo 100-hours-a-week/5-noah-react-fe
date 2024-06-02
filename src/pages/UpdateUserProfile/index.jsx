@@ -1,34 +1,19 @@
 import Header from '../../components/Header';
 import Body from '../../components/Body';
 import UpdateUserProfileForm from '../../components/UpdateUserProfileForm';
-import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import withLoading from '../../hoc/withLoading';
 
-const UpdateUserProfilePage = () => {
-    const navigate = useNavigate();
+const UpdateUserProfileFormWithLoading = withLoading(UpdateUserProfileForm);
 
-    const [userImageSrc, setUserImageSrc] = useState('');
-
-    // ! 중복 코드, 나중에 HOC로 빼기
-    useEffect(function checkAlreadySignIn() {
-        fetch('http://localhost:8000/api/check-auth', {
-            credentials: 'include',
-        })
-            .then((response) => {
-                if (response.ok) {
-                    response.json().then((body) => {
-                        setUserImageSrc(`http://localhost:8000/${body.imageUrl}`);
-                    });
-                } else {
-                    navigate('/sign-in');
-                }
-            });
-    }, [navigate]);
-
+const UpdateUserProfilePage = ({
+                                   useUserImage,
+                                   imageUrl,
+                               }) => {
     return (<>
-        <Header useUserImage={true} imageSrc={userImageSrc}></Header>
+        <Header useUserImage={useUserImage} imageSrc={imageUrl}></Header>
         <Body>
-            <UpdateUserProfileForm></UpdateUserProfileForm>
+            <UpdateUserProfileFormWithLoading url={'http://localhost:8000/api/users/update/image-and-nickname'}
+                                              options={{credentials: 'include'}}/>
         </Body>
     </>);
 };

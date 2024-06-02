@@ -6,7 +6,7 @@ import LabeledInputUserImage from '../LabeledInputUserImage';
 import HelperText from '../HelperText';
 import LabeledInput from '../LabeledInput';
 import SubmitInput from '../SubmitInput';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import validateNickname from '../../utils/validateNickname.mjs';
 import validateUserImageFile from '../../utils/validateUserImageFile.mjs';
 import ToastMessage from '../ToastMessage';
@@ -15,20 +15,30 @@ import useInput from '../../hooks/useInput';
 import useValidation from '../../hooks/useValidation';
 import useAllValid from '../../hooks/useAllValid';
 
-const UpdateUserProfileForm = () => {
-    const [imageSrc, setImageSrc] = useState('');
+const UpdateUserProfileForm = ({data}) => {
+    // 야매야매 코드..
+    let userProfile;
+    if (data) {
+        userProfile = JSON.parse(data);
+
+        if (!userProfile) {
+            // 로딩 시
+            userProfile = {
+                imageUrl: '',
+                email: '',
+                nickname: '',
+            };
+        }
+    }
+
     const {
         value: image,
         onChangeWithValue: onChangeImage,
     } = useInput(null);
-
-    const [email, setEmail] = useState('');
-
     const {
         value: nickname,
-        onChangeWithEvent: onChangeNicknameWithEvent,
-        onChangeWithValue: onChangeNicknameWithValue,
-    } = useInput('');
+        onChangeWithEvent: onChangeNickname,
+    } = useInput(userProfile.nickname);
 
     const [toast, setToast] = useState(false);
 
@@ -78,32 +88,18 @@ const UpdateUserProfileForm = () => {
         setModal(false);
     };
 
-    useEffect(function searchUserProfile() {
-        fetch('http://localhost:8000/api/users/update/image-and-nickname', {
-            credentials: 'include',
-        }).then((response) => {
-            if (response.ok) {
-                response.json().then((body) => {
-                    setImageSrc(`http://localhost:8000/${body.imageUrl}`);
-                    setEmail(body.email);
-                    onChangeNicknameWithValue(body.nickname);
-                });
-            }
-        });
-    }, []);
-
     const isAllValid = useAllValid(imageValidation.isValid, nicknameValidation.isValid);
 
     return (<MainContainer>
         <BodyTitle text={'회원정보수정'}></BodyTitle>
         <form className={styles.updateUserProfileForm} onSubmit={handleSubmit}>
             <Label labelText={'프로필 사진 *'}/>
-            <LabeledInputUserImage name={'image'} defaultUserImageSrc={imageSrc}
+            <LabeledInputUserImage name={'image'} defaultUserImageSrc={`http://localhost:8000/${userProfile.imageUrl}`}
                                    onChange={onChangeImage}/>
             <Label labelText={'이메일'}/>
-            <p className={styles.userEmail}>{email}</p>
+            <p className={styles.userEmail}>{userProfile.email}</p>
             <LabeledInput labelText={'닉네임'} type={'text'} name={'nickname'} placeholder={'닉네임을 입력하세요'} value={nickname}
-                          onChange={onChangeNicknameWithEvent}/>
+                          onChange={onChangeNickname}/>
             <HelperText text={imageValidation.helperText || nicknameValidation.helperText}/>
             <SubmitInput disabled={!isAllValid} value={'수정하기'}/>
         </form>
