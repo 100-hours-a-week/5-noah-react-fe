@@ -6,9 +6,10 @@ import SubmitInput from '../SubmitInput';
 import LabeledTextarea from '../LabeledTextarea';
 import MainContainer from '../MainContainer';
 import Label from '../Label';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import useInput from '../../hooks/useInput';
 import useValidation from '../../hooks/useValidation';
+import useAllValid from '../../hooks/useAllValid';
 
 // 이 컴포넌트에서만 사용하기 때문에 분리 X
 const validateTitle = (title) => {
@@ -61,8 +62,6 @@ const EditPostForm = ({
         onChangeWithValue: onChangeContentWithValue,
     } = useInput('');
 
-    const [submitInputDisable, setSubmitInputDisable] = useState(true);
-
     const titleValidation = useValidation(title, validateTitle);
     const contentValidation = useValidation(content, validateContent);
 
@@ -83,9 +82,7 @@ const EditPostForm = ({
         }
     }, [postId]);
 
-    useEffect(function updateSubmitInputWhenOtherInput() {
-        setSubmitInputDisable(!(titleValidation.isValid && contentValidation.isValid));
-    }, [titleValidation.isValid, contentValidation.isValid]);
+    const isAllValid = useAllValid(titleValidation.isValid, contentValidation.isValid);
 
     return (<MainContainer>
         <BodyTitle text={bodyTitleText}></BodyTitle>
@@ -99,7 +96,7 @@ const EditPostForm = ({
             <div className={styles.editPostFormInputImageContainer}>
                 <input type={'file'} name={'image'}/>
             </div>
-            <SubmitInput disabled={submitInputDisable} value={'완료'}></SubmitInput>
+            <SubmitInput disabled={!isAllValid} value={'완료'}></SubmitInput>
         </form>
     </MainContainer>);
 };
